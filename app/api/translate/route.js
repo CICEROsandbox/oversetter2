@@ -3,21 +3,21 @@ import { Anthropic } from '@anthropic-ai/sdk';
 export const maxDuration = 30;
 
 export async function POST(request) {
-  try {
-    const { text } = await request.json();
-    
-    const { Anthropic } = await import('@anthropic-ai/sdk');
-    const anthropic = new Anthropic({
-      apiKey: process.env.ANTHROPIC_API_KEY
-    });
+ try {
+   const { text } = await request.json();
+   
+   const { Anthropic } = await import('@anthropic-ai/sdk');
+   const anthropic = new Anthropic({
+     apiKey: process.env.ANTHROPIC_API_KEY
+   });
 
-    const message = await anthropic.messages.create({
-      model: "claude-3-opus-20240229",
-      max_tokens: 1000,
-      messages: [
-        {
-          role: "user",
-          content: `You are an experienced translator and science writer with expertise in climate science, familiar with IPCC and UNFCCC terminology. 
+   const message = await anthropic.messages.create({
+     model: "claude-3-opus-20240229",
+     max_tokens: 1000,
+     messages: [
+       {
+         role: "user",
+         content: `You are an experienced translator and science writer with expertise in climate science, familiar with IPCC and UNFCCC terminology. 
 
 Key terminology rules:
 - "FNs klimapanel" should always be translated as "the IPCC"
@@ -41,24 +41,29 @@ Analysis:
 - Use bullet points
 - Put suggested alternatives in **bold**
 - Keep each point brief and focused`
-        }
-      ]
-    });
+       }
+     ]
+   });
 
-    return NextResponse.json({
-      translation: message.content[0].text,
-      analysis: message.content[1]?.text || ''
-    }, {
-      status: 200
-    });
+   const response = message.content[0].text;
+   let [translation, analysis] = response.split('Analysis:');
+   
+   // Clean up the translation and analysis
+   translation = translation.replace('Translation:', '').replace(/^["']|["']$/g, '').trim();
+   analysis = analysis ? analysis.trim() : '';
 
-  } catch (error) {
-    console.error('Translation error:', error);
-    return NextResponse.json({ 
-      error: true,
-      message: 'Translation failed: ' + error.message 
-    }, { 
-      status: 500 
-    });
-  }
+   return NextResponse.json({
+     translation: translation,
+     analysis: analysis
+   });
+
+ } catch (error) {
+   console.error('Translation error:', error);
+   return NextResponse.json({ 
+     error: true,
+     message: 'Translation failed: ' + error.message 
+   }, { 
+     status: 500 
+   });
+ }
 }

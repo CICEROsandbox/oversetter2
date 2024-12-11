@@ -6,7 +6,6 @@ export default function Home() {
     { norwegian: '', english: '', analysis: '', isTranslating: false }
   ]);
   const [mergedTranslation, setMergedTranslation] = useState('');
-  const [finalAnalysis, setFinalAnalysis] = useState('');
 
   const handleTranslate = async (index) => {
     try {
@@ -34,119 +33,86 @@ export default function Home() {
     }
   };
 
-  const addParagraph = () => {
-    setParagraphs([...paragraphs, { norwegian: '', english: '', analysis: '', isTranslating: false }]);
-  };
-
-  const mergeTranslations = async () => {
-    const merged = paragraphs.map(p => p.english).join('\n\n');
-    setMergedTranslation(merged);
-
-    // Get final analysis
-    try {
-      const response = await fetch('/api/analyze', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: merged })
-      });
-      const data = await response.json();
-      setFinalAnalysis(data.analysis);
-    } catch (error) {
-      console.error('Analysis error:', error);
-    }
-  };
-
   return (
-    <main className="p-4 max-w-7xl mx-auto">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Norwegian Input Column */}
-        <div className="space-y-4">
-          <h1 className="text-2xl font-bold">Norwegian Text</h1>
-          {paragraphs.map((paragraph, index) => (
-            <div key={index} className="space-y-2">
+    <div className="p-8 max-w-6xl mx-auto bg-[#F0F4F8]">
+      <h1 className="text-4xl mb-8">Norsk til engelsk oversetter</h1>
+      
+      {paragraphs.map((paragraph, index) => (
+        <div key={index} className="mb-12">
+          <div className="grid grid-cols-2 gap-8">
+            {/* Left column */}
+            <div className="space-y-4">
               <textarea
+                placeholder="Norsk tekst her. Tekst boks skaleres etter mengde tekst"
                 value={paragraph.norwegian}
                 onChange={(e) => {
                   const updated = [...paragraphs];
                   updated[index].norwegian = e.target.value;
                   setParagraphs(updated);
                 }}
-                className="w-full p-2 border rounded min-h-[100px]"
-                placeholder="Enter Norwegian text..."
+                className="w-full h-40 p-4 bg-gray-200 border-none rounded resize-none"
               />
-              <div className="flex gap-2">
+              <div className="flex gap-4">
                 <button
                   onClick={() => handleTranslate(index)}
-                  disabled={paragraph.isTranslating}
-                  className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-300"
+                  className="px-6 py-2 bg-white rounded shadow hover:bg-gray-50"
                 >
-                  {paragraph.isTranslating ? 'Translating...' : 'Translate'}
+                  Oversett
                 </button>
                 {index === paragraphs.length - 1 && (
                   <button
-                    onClick={addParagraph}
-                    className="px-3 py-1 border rounded hover:bg-gray-100"
+                    onClick={() => setParagraphs([...paragraphs, { norwegian: '', english: '', analysis: '' }])}
+                    className="px-6 py-2 bg-white rounded shadow hover:bg-gray-50"
                   >
-                    Add Paragraph
+                    Neste avsnitt
                   </button>
                 )}
               </div>
             </div>
-          ))}
-        </div>
 
-        {/* English Translation Column */}
-        <div className="space-y-4">
-          <h1 className="text-2xl font-bold">English Translation</h1>
-          {paragraphs.map((paragraph, index) => (
-            <div key={index} className="space-y-2">
+            {/* Right column */}
+            <div className="space-y-4">
               <textarea
+                placeholder="Oversettelse her. Redigerbart felt."
                 value={paragraph.english}
                 onChange={(e) => {
                   const updated = [...paragraphs];
                   updated[index].english = e.target.value;
                   setParagraphs(updated);
                 }}
-                className="w-full p-2 border rounded min-h-[100px]"
-                placeholder="Translation will appear here..."
+                className="w-full h-40 p-4 bg-gray-200 border-none rounded resize-none"
               />
               {paragraph.analysis && (
-                <div className="p-2 bg-blue-50 border border-blue-200 rounded text-sm">
+                <div className="p-4 bg-white rounded shadow text-sm">
                   {paragraph.analysis}
                 </div>
               )}
             </div>
-          ))}
+          </div>
         </div>
-      </div>
+      ))}
 
       {paragraphs.length > 1 && (
-        <div className="mt-8 space-y-4">
+        <div className="mt-8">
           <button
-            onClick={mergeTranslations}
-            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+            onClick={() => {
+              const merged = paragraphs.map(p => p.english).join('\n\n');
+              setMergedTranslation(merged);
+            }}
+            className="px-6 py-2 bg-white rounded shadow hover:bg-gray-50"
           >
-            Merge Translations
+            Sett sammen tekst
           </button>
           
           {mergedTranslation && (
-            <>
-              <h2 className="text-xl font-bold">Complete Translation</h2>
-              <textarea
-                value={mergedTranslation}
-                onChange={(e) => setMergedTranslation(e.target.value)}
-                className="w-full p-2 border rounded min-h-[200px]"
-              />
-              {finalAnalysis && (
-                <div className="p-4 bg-gray-50 border rounded">
-                  <h3 className="font-bold mb-2">Final Analysis</h3>
-                  {finalAnalysis}
-                </div>
-              )}
-            </>
+            <textarea
+              value={mergedTranslation}
+              onChange={(e) => setMergedTranslation(e.target.value)}
+              className="mt-4 w-full h-60 p-4 bg-gray-200 border-none rounded resize-none"
+            />
           )}
         </div>
       )}
-    </main>
+    </div>
   );
 }

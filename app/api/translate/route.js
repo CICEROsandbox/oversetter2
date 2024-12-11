@@ -16,16 +16,31 @@ export async function POST(request) {
       messages: [
         {
           role: "user",
-          content: `Translate this Norwegian text to English. Provide only the direct translation without quotation marks or any additional commentary: ${text}`
+          content: `First translate this Norwegian text to English, then provide a brief analysis of any challenging terms or suggested improvements:
+
+Text to translate: ${text}
+
+Format your response as:
+Translation:
+[translation]
+
+Analysis:
+[your brief analysis]`
         }
       ]
     });
 
-    // Clean the response of any quotes
-    const cleanTranslation = message.content[0].text.replace(/^["']|["']$/g, '').trim();
+    // Split response into translation and analysis
+    const response = message.content[0].text;
+    let [translation, analysis] = response.split('Analysis:');
+    
+    // Clean up the translation and analysis
+    translation = translation.replace('Translation:', '').replace(/^["']|["']$/g, '').trim();
+    analysis = analysis ? analysis.trim() : '';
 
     return NextResponse.json({
-      translation: cleanTranslation
+      translation: translation,
+      analysis: analysis
     });
 
   } catch (error) {

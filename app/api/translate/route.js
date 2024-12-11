@@ -11,17 +11,28 @@ export async function POST(request) {
 
     const message = await anthropic.messages.create({
       model: "claude-3-sonnet-20240229",
-      max_tokens: 1000,  // Added this
+      max_tokens: 1000,
       messages: [
         {
           role: "user",
-          content: `Translate this Norwegian text to English: "${text}"`
+          content: `Translate this Norwegian text to English and provide a brief analysis of the translation, focusing on any challenging terms or suggestions for improvement:
+
+Text to translate: "${text}"
+
+Please format your response as:
+Translation: [your translation]
+Analysis: [your analysis]`
         }
       ]
     });
 
+    // Parse the response to separate translation and analysis
+    const response = message.content[0].text;
+    const [translation, analysis] = response.split('Analysis:');
+
     return NextResponse.json({
-      translation: message.content[0].text
+      translation: translation.replace('Translation:', '').trim(),
+      analysis: analysis ? analysis.trim() : ''
     });
 
   } catch (error) {

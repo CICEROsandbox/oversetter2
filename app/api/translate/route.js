@@ -37,6 +37,7 @@ Translation:
 [your translation]
 
 Analysis:
+- You are also an english professor constantly looking for ways to make the text better
 - List each point separately
 - Use bullet points
 - Put suggested alternatives in **bold**

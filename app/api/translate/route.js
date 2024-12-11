@@ -1,24 +1,32 @@
 import { NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
 
+const anthropic = new Anthropic({
+  apiKey: process.env.ANTHROPIC_API_KEY,
+});
+
 export async function POST(request) {
   try {
-    // Log the request
-    console.log('Translation request received');
-    
     const { text } = await request.json();
-    console.log('Text to translate:', text);
-
-    // Mock translation for testing
-    const translation = `Translated: ${text}`;
     
+    const message = await anthropic.messages.create({
+      model: "claude-3-sonnet-20240229",
+      max_tokens: 1024,
+      messages: [{
+        role: "user",
+        content: `Translate this Norwegian text to English. Only provide the translation, no additional comments: "${text}"`
+      }]
+    });
+
     return NextResponse.json({
-      translation: translation,
-      analysis: "Test analysis"
+      translation: message.content[0].text,
     });
 
   } catch (error) {
     console.error('Translation error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ 
+      error: error.message,
+      translation: "Translation failed. Please try again." 
+    }, { status: 500 });
   }
 }

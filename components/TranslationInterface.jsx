@@ -22,19 +22,38 @@ const TranslationInterface = () => {
     setParagraphs(newParagraphs);
   };
 
-  const translateParagraph = async (index) => {
-    const newParagraphs = [...paragraphs];
-    newParagraphs[index].isTranslating = true;
-    setParagraphs(newParagraphs);
+const translateParagraph = async (index) => {
+  const newParagraphs = [...paragraphs];
+  newParagraphs[index].isTranslating = true;
+  setParagraphs(newParagraphs);
 
-    // Simulate translation
-    await new Promise(resolve => setTimeout(resolve, 1000));
+  try {
+    const response = await fetch('/api/translate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        text: newParagraphs[index].norwegian
+      })
+    });
 
-    newParagraphs[index].english = `Translated text for: ${newParagraphs[index].norwegian}`;
-    newParagraphs[index].analysis = 'Translation analysis: Consider reviewing terminology for technical accuracy.';
+    const data = await response.json();
+    
+    if (data.error) {
+      throw new Error(data.error);
+    }
+
+    newParagraphs[index].english = data.translation;
+    newParagraphs[index].analysis = data.analysis;
+  } catch (error) {
+    console.error('Translation failed:', error);
+    newParagraphs[index].analysis = 'Translation failed: ' + error.message;
+  } finally {
     newParagraphs[index].isTranslating = false;
     setParagraphs(newParagraphs);
-  };
+  }
+};
 
   return (
     <div className="max-w-4xl mx-auto p-4">

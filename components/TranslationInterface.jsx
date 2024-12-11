@@ -1,16 +1,10 @@
 "use client";
 import React, { useState } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const TranslationInterface = () => {
   const [paragraphs, setParagraphs] = useState([
     { norwegian: '', english: '', analysis: '', isTranslating: false }
   ]);
-  const [mergedTranslation, setMergedTranslation] = useState('');
-  const [finalAnalysis, setFinalAnalysis] = useState('');
 
   const addNewParagraph = () => {
     setParagraphs([...paragraphs, { norwegian: '', english: '', analysis: '', isTranslating: false }]);
@@ -33,6 +27,7 @@ const TranslationInterface = () => {
     newParagraphs[index].isTranslating = true;
     setParagraphs(newParagraphs);
 
+    // Simulate translation
     await new Promise(resolve => setTimeout(resolve, 1000));
 
     newParagraphs[index].english = `Translated text for: ${newParagraphs[index].norwegian}`;
@@ -41,49 +36,38 @@ const TranslationInterface = () => {
     setParagraphs(newParagraphs);
   };
 
-  const mergeParagraphs = () => {
-    const merged = paragraphs.map(p => p.english).join('\n\n');
-    setMergedTranslation(merged);
-    setFinalAnalysis('Sample final analysis of the complete text...');
-  };
-
   return (
-    <div className="max-w-7xl mx-auto p-4">
-      <div className="grid grid-cols-2 gap-4">
+    <div className="max-w-4xl mx-auto p-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Left Column - Norwegian Input */}
         <div className="space-y-4">
           <h2 className="text-xl font-bold">Norwegian Text</h2>
           {paragraphs.map((paragraph, index) => (
-            <Card key={index}>
-              <CardContent className="pt-4">
-                <Textarea
-                  placeholder="Enter Norwegian text..."
-                  value={paragraph.norwegian}
-                  onChange={(e) => handleNorwegianChange(index, e.target.value)}
-                  className="min-h-[100px]"
-                />
-                <div className="flex gap-2 mt-2">
-                  <Button 
-                    onClick={() => translateParagraph(index)}
-                    disabled={!paragraph.norwegian || paragraph.isTranslating}
-                    size="sm"
-                    className="h-8 px-3 text-sm"
+            <div key={index} className="border rounded p-4">
+              <textarea
+                placeholder="Enter Norwegian text..."
+                value={paragraph.norwegian}
+                onChange={(e) => handleNorwegianChange(index, e.target.value)}
+                className="w-full min-h-[100px] p-2 border rounded"
+              />
+              <div className="flex gap-2 mt-2">
+                <button 
+                  onClick={() => translateParagraph(index)}
+                  disabled={!paragraph.norwegian || paragraph.isTranslating}
+                  className="px-3 py-1 text-sm bg-blue-500 text-white rounded disabled:bg-gray-300"
+                >
+                  {paragraph.isTranslating ? 'Translating...' : 'Translate'}
+                </button>
+                {index === paragraphs.length - 1 && (
+                  <button 
+                    onClick={addNewParagraph}
+                    className="px-3 py-1 text-sm border rounded"
                   >
-                    {paragraph.isTranslating ? 'Translating...' : 'Translate'}
-                  </Button>
-                  {index === paragraphs.length - 1 && (
-                    <Button 
-                      onClick={addNewParagraph}
-                      variant="outline"
-                      size="sm"
-                      className="h-8 px-3 text-sm"
-                    >
-                      Add Next Paragraph
-                    </Button>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
+                    Add Next Paragraph
+                  </button>
+                )}
+              </div>
+            </div>
           ))}
         </div>
 
@@ -92,59 +76,23 @@ const TranslationInterface = () => {
           <h2 className="text-xl font-bold">English Translation</h2>
           {paragraphs.map((paragraph, index) => (
             <div key={index} className="space-y-2">
-              <Card>
-                <CardContent className="pt-4">
-                  <Textarea
-                    placeholder="Translation will appear here..."
-                    value={paragraph.english}
-                    onChange={(e) => handleEnglishEdit(index, e.target.value)}
-                    className="min-h-[100px]"
-                  />
-                </CardContent>
-              </Card>
+              <div className="border rounded p-4">
+                <textarea
+                  placeholder="Translation will appear here..."
+                  value={paragraph.english}
+                  onChange={(e) => handleEnglishEdit(index, e.target.value)}
+                  className="w-full min-h-[100px] p-2 border rounded"
+                />
+              </div>
               {paragraph.analysis && (
-                <Alert>
-                  <AlertDescription>
-                    {paragraph.analysis}
-                  </AlertDescription>
-                </Alert>
+                <div className="bg-blue-50 border-blue-200 border rounded p-2 text-sm">
+                  {paragraph.analysis}
+                </div>
               )}
             </div>
           ))}
         </div>
       </div>
-
-      {paragraphs.length > 1 && (
-        <div className="mt-8">
-          <Button 
-            onClick={mergeParagraphs} 
-            className="mb-4 h-8 px-3 text-sm"
-            size="sm"
-          >
-            Merge Translations
-          </Button>
-          
-          {mergedTranslation && (
-            <div className="space-y-4">
-              <Card>
-                <CardContent className="pt-4">
-                  <h3 className="text-lg font-semibold mb-2">Complete Translation</h3>
-                  <Textarea
-                    value={mergedTranslation}
-                    className="min-h-[200px]"
-                  />
-                </CardContent>
-              </Card>
-              
-              <Alert>
-                <AlertDescription>
-                  {finalAnalysis}
-                </AlertDescription>
-              </Alert>
-            </div>
-          )}
-        </div>
-      )}
     </div>
   );
 };

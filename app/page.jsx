@@ -101,17 +101,35 @@ const handleDownload = () => {
             />
           </div>
 
-          {paragraph.analysis && (
-            <div style={{ 
-              marginLeft: '50%', 
-              paddingLeft: '20px', 
-              marginBottom: '10px',
-              color: '#666',
-              fontSize: '14px'
-            }}>
-              {paragraph.analysis}
-            </div>
-          )}
+{paragraph.analysis && (
+  <div style={{ 
+    marginLeft: '50%', 
+    paddingLeft: '20px', 
+    marginBottom: '10px',
+    color: '#666',
+    fontSize: '14px'
+  }}>
+    {paragraph.analysis.split('•').map((point, i) => {
+      if (!point.trim()) return null;
+      
+      // Convert **text** to styled spans
+      const formattedPoint = point.replace(
+        /\*\*(.*?)\*\*/g,
+        '<strong style="color: #000">$1</strong>'
+      );
+
+      return (
+        <div 
+          key={i} 
+          style={{ marginBottom: '8px' }}
+          dangerouslySetInnerHTML={{ 
+            __html: '• ' + formattedPoint.trim() 
+          }}
+        />
+      );
+    })}
+  </div>
+)}
 
           <div style={{ marginTop: '10px' }}>
             <button

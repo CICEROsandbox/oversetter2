@@ -101,55 +101,37 @@ export default function Home() {
             </div>
           )}
 
-          {index === paragraphs.length - 1 && (
-            <div style={{ marginTop: '10px' }}>
-              <button
-                style={{
-                  marginRight: '10px',
-                  padding: '5px 15px',
-                  backgroundColor: paragraph.isTranslating ? '#cccccc' : '#e9e9e9',
-                  border: '1px solid #999',
-                  cursor: paragraph.isTranslating ? 'not-allowed' : 'pointer'
-                }}
-                onClick={() => handleTranslate(index)}
-                disabled={paragraph.isTranslating}
-              >
-                {paragraph.isTranslating ? 'Oversetter...' : 'Oversett'}
-              </button>
-              <button
-                style={{
-                  padding: '5px 15px',
-                  backgroundColor: '#e9e9e9',
-                  border: '1px solid #999',
-                  cursor: 'pointer'
-                }}
-                onClick={addParagraph}
-              >
-                Neste avsnitt
-              </button>
-            </div>
-          )}
-        </div>
-      ))}
+{paragraphs.length > 1 && (
+  <button
+    style={{
+      padding: '5px 15px',
+      backgroundColor: '#e9e9e9',
+      border: '1px solid #999',
+      cursor: 'pointer',
+      marginTop: '20px'
+    }}
+    onClick={() => {
+      // Combine all translated paragraphs with line breaks between them
+      const mergedText = paragraphs
+        .map(p => p.english)
+        .filter(text => text && text.trim() !== '') // Remove empty translations
+        .join('\n\n');
 
-      {paragraphs.length > 1 && (
-        <button
-          style={{
-            padding: '5px 15px',
-            backgroundColor: '#e9e9e9',
-            border: '1px solid #999',
-            cursor: 'pointer',
-            marginTop: '20px'
-          }}
-          onClick={() => {
-            // Implement merge functionality
-            const mergedText = paragraphs.map(p => p.english).join('\n\n');
-            // You can handle the merged text here
-          }}
-        >
-          Sett sammen tekst
-        </button>
-      )}
+      // Create blob and download link
+      const blob = new Blob([mergedText], { type: 'text/plain' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'translated-text.txt';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }}
+  >
+    Sett sammen tekst
+  </button>
+)}
     </div>
   );
 }

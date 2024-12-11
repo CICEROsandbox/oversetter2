@@ -3,14 +3,21 @@ import Anthropic from '@anthropic-ai/sdk';
 
 export async function POST(request) {
   try {
-    const { text } = await request.json();
+    console.log('API route started');
     
-    // Initialize Anthropic client
+    const { text } = await request.json();
+    console.log('Received text:', text);
+    
+    if (!process.env.ANTHROPIC_API_KEY) {
+      throw new Error('ANTHROPIC_API_KEY is not configured');
+    }
+    
+    console.log('Initializing Anthropic client');
     const anthropic = new Anthropic({
       apiKey: process.env.ANTHROPIC_API_KEY,
     });
 
-    // Call Claude for translation
+    console.log('Calling Claude API');
     const message = await anthropic.messages.create({
       model: "claude-3-sonnet-20240229",
       max_tokens: 1024,
@@ -20,14 +27,21 @@ export async function POST(request) {
       }]
     });
 
+    console.log('Translation received');
     return NextResponse.json({
       translation: message.content[0].text,
     });
 
   } catch (error) {
-    console.error('Translation error:', error);
+    console.error('Detailed error:', {
+      message: error.message,
+      stack: error.stack,
+      name: error.name
+    });
+    
     return NextResponse.json({ 
-      translation: "Translation failed: " + error.message 
+      translation: "Translation failed: " + error.message,
+      error: error.message
     }, { status: 500 });
   }
 }

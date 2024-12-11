@@ -37,26 +37,26 @@ export default function Home() {
     }
   };
 
-  const handleDownload = () => {
-    try {
-      const mergedText = paragraphs
-        .map(p => p.english)
-        .filter(text => text && text.trim() !== '')
-        .join('\n\n');
+const handleDownload = () => {
+  try {
+    const mergedText = paragraphs
+      .map(p => p.english.replace(/^["']|["']$/g, '').trim()) // Remove surrounding quotes
+      .filter(text => text && text.trim() !== '')
+      .join('\n\n');
 
-      const blob = new Blob([mergedText], { type: 'text/plain;charset=utf-8' });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `translated-text-${new Date().toISOString().split('T')[0]}.txt`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error('Download error:', error);
-    }
-  };
+    const blob = new Blob([mergedText], { type: 'text/plain;charset=utf-8' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `translated-text-${new Date().toISOString().split('T')[0]}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error('Download error:', error);
+  }
+};
 
   return (
     <div style={{ padding: '20px' }}>

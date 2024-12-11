@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { Anthropic } from '@anthropic-ai/sdk';
 
 export async function POST(request) {
   try {
@@ -15,24 +16,16 @@ export async function POST(request) {
       messages: [
         {
           role: "user",
-          content: `Translate this Norwegian text to English and provide a brief analysis of the translation, focusing on any challenging terms or suggestions for improvement:
-
-Text to translate: "${text}"
-
-Please format your response as:
-Translation: [your translation]
-Analysis: [your analysis]`
+          content: `Translate this Norwegian text to English. Provide only the direct translation without quotation marks or any additional commentary: ${text}`
         }
       ]
     });
 
-    // Parse the response to separate translation and analysis
-    const response = message.content[0].text;
-    const [translation, analysis] = response.split('Analysis:');
+    // Clean the response of any quotes
+    const cleanTranslation = message.content[0].text.replace(/^["']|["']$/g, '').trim();
 
     return NextResponse.json({
-      translation: translation.replace('Translation:', '').trim(),
-      analysis: analysis ? analysis.trim() : ''
+      translation: cleanTranslation
     });
 
   } catch (error) {

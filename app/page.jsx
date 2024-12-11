@@ -12,9 +12,6 @@ export default function Home() {
       updatedParagraphs[index].isTranslating = true;
       setParagraphs(updatedParagraphs);
 
-      updatedParagraphs[index].english = "Oversetter...";
-      setParagraphs([...updatedParagraphs]);
-
       const response = await fetch('/api/translate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -26,7 +23,7 @@ export default function Home() {
       updatedParagraphs[index] = {
         ...updatedParagraphs[index],
         english: data.translation,
-        analysis: data.analysis || 'Analysis will appear here.',
+        analysis: data.analysis,
         isTranslating: false
       };
       setParagraphs([...updatedParagraphs]);
@@ -40,8 +37,25 @@ export default function Home() {
     }
   };
 
-  const addParagraph = () => {
-    setParagraphs([...paragraphs, { norwegian: '', english: '', analysis: '', isTranslating: false }]);
+  const handleDownload = () => {
+    try {
+      const mergedText = paragraphs
+        .map(p => p.english)
+        .filter(text => text && text.trim() !== '')
+        .join('\n\n');
+
+      const blob = new Blob([mergedText], { type: 'text/plain;charset=utf-8' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `translated-text-${new Date().toISOString().split('T')[0]}.txt`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Download error:', error);
+    }
   };
 
   return (
@@ -69,14 +83,13 @@ export default function Home() {
                 setParagraphs(updated);
               }}
             />
-
             <textarea
               style={{
                 width: '50%',
                 height: '150px',
                 border: '1px solid #ccc',
                 padding: '10px',
-                backgroundColor: paragraph.isTranslating ? '#f0f0f0' : '#f5f5f5'
+                backgroundColor: '#f5f5f5'
               }}
               placeholder="Oversettelse her. Redigerbart felt."
               value={paragraph.english}
@@ -85,7 +98,6 @@ export default function Home() {
                 updated[index].english = e.target.value;
                 setParagraphs(updated);
               }}
-              readOnly={paragraph.isTranslating}
             />
           </div>
 
@@ -101,37 +113,51 @@ export default function Home() {
             </div>
           )}
 
-{paragraphs.length > 1 && (
-  <button
-    style={{
-      padding: '5px 15px',
-      backgroundColor: '#e9e9e9',
-      border: '1px solid #999',
-      cursor: 'pointer',
-      marginTop: '20px'
-    }}
-    onClick={() => {
-      // Combine all translated paragraphs with line breaks between them
-      const mergedText = paragraphs
-        .map(p => p.english)
-        .filter(text => text && text.trim() !== '') // Remove empty translations
-        .join('\n\n');
+          <div style={{ marginTop: '10px' }}>
+            <button
+              style={{
+                marginRight: '10px',
+                padding: '5px 15px',
+                backgroundColor: paragraph.isTranslating ? '#cccccc' : '#e9e9e9',
+                border: '1px solid #999',
+                cursor: paragraph.isTranslating ? 'not-allowed' : 'pointer'
+              }}
+              onClick={() => handleTranslate(index)}
+              disabled={paragraph.isTranslating}
+            >
+              {paragraph.isTranslating ? 'Oversetter...' : 'Oversett'}
+            </button>
+            {index === paragraphs.length - 1 && (
+              <button
+                style={{
+                  padding: '5px 15px',
+                  backgroundColor: '#e9e9e9',
+                  border: '1px solid #999',
+                  cursor: 'pointer'
+                }}
+                onClick={() => setParagraphs([...paragraphs, { norwegian: '', english: '', analysis: '', isTranslating: false }])}
+              >
+                Neste avsnitt
+              </button>
+            )}
+          </div>
+        </div>
+      ))}
 
-      // Create blob and download link
-      const blob = new Blob([mergedText], { type: 'text/plain' });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'translated-text.txt';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
-    }}
-  >
-    Sett sammen tekst
-  </button>
-)}
+      {paragraphs.length > 1 && (
+        <button
+          style={{
+            padding: '5px 15px',
+            backgroundColor: '#e9e9e9',
+            border: '1px solid #999',
+            cursor: 'pointer',
+            marginTop: '20px'
+          }}
+          onClick={handleDownload}
+        >
+          Sett sammen tekst
+        </button>
+      )}
     </div>
   );
 }

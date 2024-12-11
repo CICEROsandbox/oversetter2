@@ -18,6 +18,17 @@ const message = await anthropic.messages.create({
       role: "user",
       content: `You are an experienced translator and science writer with expertise in climate science, familiar with IPCC and UNFCCC terminology. 
 
+Key terminology rules:
+- "FNs klimapanel" should always be translated as "the IPCC"
+- Use standard terminology from IPCC/UNFCCC reports
+- Maintain technical accuracy while ensuring readability
+
+When translating from Norwegian to English:
+- Use active language where appropriate
+- Rephrase rather than translate directly if it improves clarity
+- Replace Norwegian idioms with natural English equivalents
+- Ensure all climate science terminology matches official IPCC/UNFCCC usage
+
 When translating from Norwegian to English:
 - Use active language where appropriate
 - Rephrase rather than translate directly if it improves clarity

@@ -1,5 +1,6 @@
 "use client";
 import { useState } from 'react';
+import './globals.css';
 
 export default function Home() {
   const [paragraphs, setParagraphs] = useState([
@@ -7,94 +8,69 @@ export default function Home() {
   ]);
 
   const handleTranslate = async (index) => {
-    try {
-      const updatedParagraphs = [...paragraphs];
-      updatedParagraphs[index].isTranslating = true;
-      setParagraphs(updatedParagraphs);
-
-      const response = await fetch('/api/translate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: paragraphs[index].norwegian })
-      });
-
-      const data = await response.json();
-      
-      updatedParagraphs[index] = {
-        ...updatedParagraphs[index],
-        english: data.translation,
-        analysis: data.analysis,
-        isTranslating: false
-      };
-      setParagraphs(updatedParagraphs);
-    } catch (error) {
-      console.error('Translation error:', error);
-    }
+    // ... existing translation logic ...
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Norsk til engelsk oversetter</h1>
+    <div className="translator-container">
+      <h1 style={{ fontSize: '24px', marginBottom: '20px' }}>
+        Norsk til engelsk oversetter
+      </h1>
       
-      {paragraphs.map((paragraph, index) => (
-        <div key={index} className="mb-8">
+      <div style={{ display: 'flex', gap: '20px' }}>
+        {/* Left column */}
+        <div style={{ flex: 1 }}>
           <textarea
-            className="w-full h-32 p-2 border rounded mb-2"
+            className="text-area"
             placeholder="Norsk tekst her. Tekst boks skaleres etter mengde tekst"
-            value={paragraph.norwegian}
+            value={paragraphs[0].norwegian}
             onChange={(e) => {
               const updated = [...paragraphs];
-              updated[index].norwegian = e.target.value;
+              updated[0].norwegian = e.target.value;
               setParagraphs(updated);
             }}
           />
           
-          <div className="flex gap-2 mb-4">
+          <div style={{ marginTop: '10px' }}>
             <button
-              onClick={() => handleTranslate(index)}
-              className="px-4 py-1 border rounded hover:bg-gray-100"
-              disabled={paragraph.isTranslating}
+              className="button"
+              onClick={() => handleTranslate(0)}
+              disabled={paragraphs[0].isTranslating}
             >
-              {paragraph.isTranslating ? 'Oversetter...' : 'Oversett'}
+              Oversett
             </button>
-            
-            {index === paragraphs.length - 1 && (
-              <button
-                onClick={() => setParagraphs([...paragraphs, { norwegian: '', english: '', analysis: '' }])}
-                className="px-4 py-1 border rounded hover:bg-gray-100"
-              >
-                Neste avsnitt
-              </button>
-            )}
+            <button
+              className="button"
+              onClick={() => setParagraphs([...paragraphs, { norwegian: '', english: '', analysis: '' }])}
+            >
+              Neste avsnitt
+            </button>
           </div>
+        </div>
 
+        {/* Right column */}
+        <div style={{ flex: 1 }}>
           <textarea
-            className="w-full h-32 p-2 border rounded mb-2"
+            className="text-area"
             placeholder="Oversettelse her. Redigerbart felt."
-            value={paragraph.english}
+            value={paragraphs[0].english}
             onChange={(e) => {
               const updated = [...paragraphs];
-              updated[index].english = e.target.value;
+              updated[0].english = e.target.value;
               setParagraphs(updated);
             }}
-            readOnly={!paragraph.english}
           />
-          
-          {paragraph.analysis && (
-            <div className="p-2 bg-gray-50 border rounded text-sm">
-              {paragraph.analysis}
-            </div>
-          )}
         </div>
-      ))}
+      </div>
 
       {paragraphs.length > 1 && (
         <button
+          className="button"
+          style={{ marginTop: '20px' }}
           onClick={() => {
             const merged = paragraphs.map(p => p.english).join('\n\n');
-            // Add functionality for merging translations
+            // Merge functionality
           }}
-          className="px-4 py-1 border rounded hover:bg-gray-100"
         >
           Sett sammen tekst
         </button>

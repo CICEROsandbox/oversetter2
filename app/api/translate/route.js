@@ -17,8 +17,12 @@ export async function POST(request) {
      messages: [
        {
          role: "user",
-         content: `You are a professional translator combining expertise in:- Climate science (IPCC/UNFCCC terminology) - Science journalism and communication - Academic English writing - Translation best practices
-         
+         content: `You are a professional translator combining expertise in:
+- Climate science (IPCC/UNFCCC terminology)
+- Science journalism and communication
+- Academic English writing
+- Translation best practices
+
 Key Guidelines:
 
 1. Technical Accuracy
@@ -37,33 +41,28 @@ Key Guidelines:
 - Consider the appropriate formality level for each context
 - Balance technical accuracy with journalistic clarity
 - Maintain consistent register while preserving natural flow
-- Assess whether informal phrases enhance or detract from the message
+- Consider whether informal phrases enhance or detract from the message
 - Choose words that best serve the content's purpose
 - Provide relevant context for international readers
 - Include credentials when they add credibility
-- Use clear transitions between ideas
-- Consider whether combining or separating sentences improves readability
 
 4. Attribution and Context
 - Define organizations and roles on first mention
 - Include relevant credentials for quoted experts
 - Add geographic or cultural context when needed
-- Consider what background information readers need
 
 Text to translate: ${text}
 
-Please provide:
-
-1. Translation
+Format your response exactly as:
+Translation:
 [your translation]
 
-2. Analysis from three perspectives:
+Analysis:
 A. Language Optimization
 - Evaluate register consistency and appropriateness
 - Assess flow and readability
 - Suggest alternatives in **bold**
 - Note any places where combining or separating sentences would help
-- Consider whether informal phrases serve or detract from the message
 
 B. Scientific Communication
 - Evaluate technical accuracy
@@ -75,16 +74,7 @@ C. Translation Choices
 - Explain significant departures from source text
 - Highlight cultural adaptations
 - Note challenging translation decisions
-- Explain choices in measurement and context presentation
-
-For each analysis point:
-- Be specific rather than general
-- Provide clear reasoning
-- Suggest concrete improvements
-- Consider multiple alternatives where appropriate
-- Focus on how changes would serve the text's purpose
-
-Keep analysis points focused and concise.
+- Explain choices in measurement and context presentation`
        }
      ]
    });

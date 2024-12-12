@@ -1,23 +1,19 @@
 import { NextResponse } from 'next/server';
 import { Anthropic } from '@anthropic-ai/sdk';
+
 export const maxDuration = 60;
 
 export async function POST(request) {
   try {
     const { text } = await request.json();
-    
-    const { Anthropic } = await import('@anthropic-ai/sdk');
+
     const anthropic = new Anthropic({
       apiKey: process.env.ANTHROPIC_API_KEY
     });
 
-    const message = await anthropic.messages.create({
-      model: "claude-3-opus-20240229",
-      max_tokens: 1000,
-      messages: [
-        {
-          role: "user",
-          content: `You are a professional translator combining expertise in:
+    // Construct the prompt using Anthropic's required formatting.
+    // Include the entire instruction plus the user text.
+    const systemInstructions = `You are a professional translator combining expertise in:
 - Climate science (IPCC/UNFCCC terminology)
 - Science journalism and communication
 - Academic English writing
@@ -106,31 +102,39 @@ Areas for improvement:
   - Suggested improvement: **[consistent register alternative]**
 - Structural improvements:
   - Current issue: [describe]
-  - Suggested improvement: **[better structure]**`
-        }
-      ]
+  - Suggested improvement: **[better structure]**`;
+
+    // Construct the final prompt. Claude expects a structure with HUMAN_PROMPT and AI_PROMPT.
+    const prompt = `${Anthropic.HUMAN_PROMPT}${systemInstructions}${Anthropic.AI_PROMPT}`;
+
+    // Call the Anthropic API using completions.create
+    const completion = await anthropic.completions.create({
+      model: "claude-2", // Make sure the model name is correct and available.
+      max_tokens_to_sample: 1000,
+      prompt,
+      temperature: 0, // Optional, adjust temperature as needed.
+      stop_sequences: [Anthropic.HUMAN_PROMPT]
     });
 
-    const response = message.content[0].text;
-    let [translation, analysis] = response.split('Analysis:');
-    
-    // More robust error handling and cleaning
-    if (!translation || !analysis) {
+    const response = completion.completion;
+
+    // Now parse the response into translation and analysis.
+    let [translationPart, analysisPart] = response.split('Analysis:');
+
+    if (!translationPart || !analysisPart) {
       throw new Error('Invalid response format from API');
     }
 
-    // Clean up the translation and analysis
-    translation = translation.replace('Translation:', '').replace(/^["']|["']$/g, '').trim();
-    analysis = analysis.trim();
+    translationPart = translationPart.replace('Translation:', '').trim();
+    analysisPart = analysisPart.trim();
 
-    // Verify we have content before returning
-    if (!translation || !analysis) {
+    if (!translationPart || !analysisPart) {
       throw new Error('Empty translation or analysis after processing');
     }
 
     return NextResponse.json({
-      translation,
-      analysis
+      translation: translationPart,
+      analysis: analysisPart
     });
 
   } catch (error) {

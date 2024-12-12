@@ -20,6 +20,7 @@ export async function POST(request) {
 - Translation best practices
 
 Key Guidelines:
+1. Do not add any comments to the translation - such as "this is my translation" or "here is the result". Just provide the translation
 
 1. Technical Accuracy
 - Translate "FNs klimapanel" as "the IPCC"
@@ -40,7 +41,6 @@ Key Guidelines:
 - Consider whether informal phrases enhance or detract from the message
 - Choose words that best serve the content's purpose
 - Provide relevant context for international readers
-- Include credentials when they add credibility
 
 Text to translate: ${text}
 
@@ -51,16 +51,8 @@ Translation:
 
 Analysis:
 
-Strengths:
-1. [Technical accuracy strength]
-2. [Clarity and readability strength]
-3. [Register consistency strength]
-4. [Language adaptation strength]
-5. [Context and attribution strength]
-
 Areas for improvement:
 
-1. First paragraph:
 - Style and word choice issues:
   - Current issue: [describe]
   - Suggested improvement: **[formal alternative]**
@@ -69,40 +61,7 @@ Areas for improvement:
   - Suggested improvement: **[consistent register alternative]**
 - Structural improvements:
   - Current issue: [describe]
-  - Suggested improvement: **[better structure]**
-
-2. Second paragraph:
-- Style and word choice issues:
-  - Current issue: [describe]
-  - Suggested improvement: **[formal alternative]**
-- Register consistency:
-  - Current issue: [describe]
-  - Suggested improvement: **[consistent register alternative]**
-- Structural improvements:
-  - Current issue: [describe]
-  - Suggested improvement: **[better structure]**
-
-3. Third paragraph:
-- Style and word choice issues:
-  - Current issue: [describe]
-  - Suggested improvement: **[formal alternative]**
-- Register consistency:
-  - Current issue: [describe]
-  - Suggested improvement: **[consistent register alternative]**
-- Structural improvements:
-  - Current issue: [describe]
-  - Suggested improvement: **[better structure]**
-
-4. Fourth paragraph:
-- Style and word choice issues:
-  - Current issue: [describe]
-  - Suggested improvement: **[formal alternative]**
-- Register consistency:
-  - Current issue: [describe]
-  - Suggested improvement: **[consistent register alternative]**
-- Structural improvements:
-  - Current issue: [describe]
-  - Suggested improvement: **[better structure]**`;
+  - Suggested improvement: **[better structure]**;
 
     // Construct the final prompt. Claude expects a structure with HUMAN_PROMPT and AI_PROMPT.
     const prompt = `${Anthropic.HUMAN_PROMPT}${systemInstructions}${Anthropic.AI_PROMPT}`;

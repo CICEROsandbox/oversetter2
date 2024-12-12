@@ -56,33 +56,51 @@ Translation:
 Analysis:
 
 Strengths:
-[List 4-5 key strengths of the translation, using numbers]
+1. [Technical accuracy strength]
+2. [Clarity and readability strength]
+3. [Register consistency strength]
+4. [Language adaptation strength]
+5. [Context and attribution strength]
 
 Areas for improvement:
 
 1. First paragraph:
-- Identify style and word choice issues
-- Suggest better alternatives in **bold** format
-- Note any structural improvements
-- Focus on register consistency
+- Style and word choice issues:
+  • Current issue: [describe]
+  • Suggested improvement: **[formal alternative]**
+- Register consistency:
+  • Current issue: [describe]
+  • Suggested improvement: **[consistent register alternative]**
+- Structural improvements:
+  • Current issue: [describe]
+  • Suggested improvement: **[better structure]**
 
 2. Second paragraph:
-- Identify style and word choice issues
-- Suggest better alternatives in **bold** format
-- Note any structural improvements
-- Focus on register consistency
+[Same structure as above, focusing on:
+- Style and word choice
+- Register consistency
+- Structure
+- Technical accuracy]
 
 3. Third paragraph:
-- Identify style and word choice issues
-- Suggest better alternatives in **bold** format
-- Note any structural improvements
-- Focus on register consistency
+[Same structure as above, analyzing:
+- Language clarity
+- Register appropriateness
+- Sentence structure
+- Technical precision]
 
 4. Fourth paragraph:
-- Identify style and word choice issues
-- Suggest better alternatives in **bold** format
-- Note any structural improvements
-- Focus on register consistency`
+[Same structure as above, evaluating:
+- Style consistency
+- Word choice
+- Structure clarity
+- Technical accuracy]
+
+For each improvement:
+- Focus on maintaining consistent register
+- Consider international readability
+- Preserve technical accuracy
+- Ensure natural English flow`
        }
      ]
    });

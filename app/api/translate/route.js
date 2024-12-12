@@ -52,13 +52,10 @@ Translation:
 Analysis:
 
 Strengths:
-1. [Technical accuracy strength]
-2. [Clarity and readability strength]
-3. [Register consistency strength]
-4. [Language adaptation strength]
-5. [Context and attribution strength]
+(Provide detailed, text-specific strengths. For example, discuss terminology accuracy, clarity, adaptation, etc.)
 
 Areas for improvement:
+(Provide paragraph-specific and detailed feedback on style, word choice, register consistency, and structure, using the format below.)
 
 1. First paragraph:
 - Style and word choice issues:
@@ -71,38 +68,7 @@ Areas for improvement:
   - Current issue: [describe]
   - Suggested improvement: **[better structure]**
 
-2. Second paragraph:
-- Style and word choice issues:
-  - Current issue: [describe]
-  - Suggested improvement: **[formal alternative]**
-- Register consistency:
-  - Current issue: [describe]
-  - Suggested improvement: **[consistent register alternative]**
-- Structural improvements:
-  - Current issue: [describe]
-  - Suggested improvement: **[better structure]**
-
-3. Third paragraph:
-- Style and word choice issues:
-  - Current issue: [describe]
-  - Suggested improvement: **[formal alternative]**
-- Register consistency:
-  - Current issue: [describe]
-  - Suggested improvement: **[consistent register alternative]**
-- Structural improvements:
-  - Current issue: [describe]
-  - Suggested improvement: **[better structure]**
-
-4. Fourth paragraph:
-- Style and word choice issues:
-  - Current issue: [describe]
-  - Suggested improvement: **[formal alternative]**
-- Register consistency:
-  - Current issue: [describe]
-  - Suggested improvement: **[consistent register alternative]**
-- Structural improvements:
-  - Current issue: [describe]
-  - Suggested improvement: **[better structure]**`;
+(Repeat for subsequent paragraphs.)`;
 
     // Construct the final prompt. Claude expects a structure with HUMAN_PROMPT and AI_PROMPT.
     const prompt = `${Anthropic.HUMAN_PROMPT}${systemInstructions}${Anthropic.AI_PROMPT}`;

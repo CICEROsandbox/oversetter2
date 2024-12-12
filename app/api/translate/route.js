@@ -64,43 +64,52 @@ Strengths:
 
 Areas for improvement:
 
+Areas for improvement:
+
 1. First paragraph:
 - Style and word choice issues:
-  • Current issue: [describe]
-  • Suggested improvement: **[formal alternative]**
+  - Current issue: [describe]
+  - Suggested improvement: **[formal alternative]**
 - Register consistency:
-  • Current issue: [describe]
-  • Suggested improvement: **[consistent register alternative]**
+  - Current issue: [describe]
+  - Suggested improvement: **[consistent register alternative]**
 - Structural improvements:
-  • Current issue: [describe]
-  • Suggested improvement: **[better structure]**
-
+  - Current issue: [describe]
+  - Suggested improvement: **[better structure]**
+  
 2. Second paragraph:
-[Same structure as above, focusing on:
-- Style and word choice
-- Register consistency
-- Structure
-- Technical accuracy]
+- Style and word choice issues:
+  - Current issue: [describe]
+  - Suggested improvement: **[formal alternative]**
+- Register consistency:
+  - Current issue: [describe]
+  - Suggested improvement: **[consistent register alternative]**
+- Structural improvements:
+  - Current issue: [describe]
+  - Suggested improvement: **[better structure]**
 
 3. Third paragraph:
-[Same structure as above, analyzing:
-- Language clarity
-- Register appropriateness
-- Sentence structure
-- Technical precision]
+- Style and word choice issues:
+  - Current issue: [describe]
+  - Suggested improvement: **[formal alternative]**
+- Register consistency:
+  - Current issue: [describe]
+  - Suggested improvement: **[consistent register alternative]**
+- Structural improvements:
+  - Current issue: [describe]
+  - Suggested improvement: **[better structure]**
 
 4. Fourth paragraph:
-[Same structure as above, evaluating:
-- Style consistency
-- Word choice
-- Structure clarity
-- Technical accuracy]
-
-For each improvement:
-- Focus on maintaining consistent register
-- Consider international readability
-- Preserve technical accuracy
-- Ensure natural English flow`
+- Style and word choice issues:
+  - Current issue: [describe]
+  - Suggested improvement: **[formal alternative]**
+- Register consistency:
+  - Current issue: [describe]
+  - Suggested improvement: **[consistent register alternative]**
+- Structural improvements:
+  - Current issue: [describe]
+  - Suggested improvement: **[better structure]**
+  
        }
      ]
    });

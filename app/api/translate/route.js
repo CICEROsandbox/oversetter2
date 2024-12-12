@@ -62,22 +62,34 @@ Suggestions for improvement:
       stop_sequences: [Anthropic.HUMAN_PROMPT]
     });
 
-    const response = completion.completion;
-
-    let [translationPart, analysisPart] = response.split('Analysis:');
-
-    if (!translationPart || !analysisPart) {
-      throw new Error('Invalid response format from API');
+    // Add safety checks for the response
+    if (!completion?.completion) {
+      throw new Error('No completion received from API');
     }
 
-    translationPart = translationPart.replace('Translation:', '').trim();
-    analysisPart = analysisPart.trim();
+    const response = completion.completion;
+    
+    // Add better error handling for the split operation
+    let translationPart = '';
+    let analysisPart = '';
+    
+    if (response.includes('Analysis:')) {
+      [translationPart, analysisPart] = response.split('Analysis:');
+      translationPart = translationPart.replace('Translation:', '').trim();
+      analysisPart = analysisPart.trim();
+    } else {
+      // If the response doesn't contain 'Analysis:', assume it's all translation
+      translationPart = response.replace('Translation:', '').trim();
+      analysisPart = 'No analysis provided';
+    }
 
-    if (!translationPart || !analysisPart) {
-      throw new Error('Empty translation or analysis after processing');
+    // Validate that we have at least a translation
+    if (!translationPart) {
+      throw new Error('No translation found in response');
     }
 
     return NextResponse.json({
+      success: true,
       translation: translationPart,
       analysis: analysisPart
     });
@@ -85,8 +97,11 @@ Suggestions for improvement:
   } catch (error) {
     console.error('Translation error:', error);
     return NextResponse.json({ 
+      success: false,
       error: true,
       message: 'Translation failed: ' + error.message,
+      translation: '',
+      analysis: '',
       details: process.env.NODE_ENV === 'development' ? error.stack : undefined
     }, { 
       status: error.status || 500 

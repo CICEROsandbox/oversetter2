@@ -59,47 +59,96 @@ const handleDownload = () => {
 };
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1 style={{ fontSize: '24px', marginBottom: '20px', fontFamily: 'serif' }}>
-        Norsk til engelsk oversetter
-      </h1>
-      
-      {paragraphs.map((paragraph, index) => (
-        <div key={index} style={{ marginBottom: '20px' }}>
-          <div style={{ display: 'flex', gap: '20px', marginBottom: '10px' }}>
-            <textarea
-              style={{
-                width: '50%',
-                height: '150px',
-                border: '1px solid #ccc',
-                padding: '10px',
-                backgroundColor: '#f5f5f5'
-              }}
-              placeholder="Norsk tekst her. Tekst boks skaleres"
-              value={paragraph.norwegian}
-              onChange={(e) => {
-                const updated = [...paragraphs];
-                updated[index].norwegian = e.target.value;
-                setParagraphs(updated);
-              }}
-            />
-            <textarea
-              style={{
-                width: '50%',
-                height: '150px',
-                border: '1px solid #ccc',
-                padding: '10px',
-                backgroundColor: '#f5f5f5'
-              }}
-              placeholder="Oversettelse her. Redigerbart felt."
-              value={paragraph.english}
-              onChange={(e) => {
-                const updated = [...paragraphs];
-                updated[index].english = e.target.value;
-                setParagraphs(updated);
-              }}
-            />
+<div style={{ display: 'flex', gap: '20px', marginBottom: '10px' }}>
+  {/* Norwegian textarea */}
+  <div style={{ width: '50%' }}>
+    <textarea
+      style={{
+        width: '100%',
+        height: '150px',
+        border: '1px solid #ccc',
+        padding: '10px',
+        backgroundColor: '#f5f5f5'
+      }}
+      placeholder="Norsk tekst her. Tekst boks skaleres"
+      value={paragraph.norwegian}
+      onChange={(e) => {
+        const updated = [...paragraphs];
+        updated[index].norwegian = e.target.value;
+        setParagraphs(updated);
+      }}
+    />
+  </div>
+
+  {/* English textarea and analysis */}
+  <div style={{ width: '50%' }}>
+    <textarea
+      style={{
+        width: '100%',
+        height: '150px',
+        border: '1px solid #ccc',
+        padding: '10px',
+        backgroundColor: '#f5f5f5'
+      }}
+      placeholder="Oversettelse her. Redigerbart felt."
+      value={paragraph.english}
+      onChange={(e) => {
+        const updated = [...paragraphs];
+        updated[index].english = e.target.value;
+        setParagraphs(updated);
+      }}
+    />
+
+    {paragraph.analysis && (
+      <details className="analysis-section mt-2 border rounded-lg">
+        <summary className="p-3 bg-gray-50 font-medium cursor-pointer hover:bg-gray-100">
+          Show Analysis
+        </summary>
+        <div className="p-4">
+          {/* Strengths Section */}
+          <div className="mb-4">
+            <h3 className="text-gray-700 font-semibold mb-2">Strengths</h3>
+            <div className="space-y-2">
+              {paragraph.analysis
+                .split('Strengths:')[1]
+                .split('Areas for improvement:')[0]
+                .split('\n')
+                .filter(line => line.trim())
+                .map((strength, i) => (
+                  <div key={i} className="text-gray-600 ml-2">
+                    {strength.trim()}
+                  </div>
+                ))}
+            </div>
           </div>
+
+          {/* Improvement Section */}
+          <div>
+            <h3 className="text-gray-700 font-semibold mb-2">Areas for improvement</h3>
+            <div className="space-y-4">
+              {paragraph.analysis
+                .split('Areas for improvement:')[1]
+                .split('Issue:')
+                .filter(str => str.trim())
+                .map((section, i) => {
+                  const parts = section.split('Suggestion:');
+                  if (parts.length !== 2) return null;
+                  return (
+                    <div key={i} className="mb-4">
+                      <div className="text-red-600 font-semibold">Issue:</div>
+                      <div className="ml-4 mb-2">{parts[0].trim()}</div>
+                      <div className="text-green-600 font-semibold">Suggestion:</div>
+                      <div className="ml-4">{parts[1].trim()}</div>
+                    </div>
+                  );
+                })}
+            </div>
+          </div>
+        </div>
+      </details>
+    )}
+  </div>
+</div>
 
 {paragraph.analysis && (
   <details className="analysis-section mt-2 border rounded-lg">

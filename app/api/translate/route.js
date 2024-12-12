@@ -108,22 +108,33 @@ For each improvement:
    const response = message.content[0].text;
    let [translation, analysis] = response.split('Analysis:');
    
+   // More robust error handling and cleaning
+   if (!translation || !analysis) {
+     throw new Error('Invalid response format from API');
+   }
+
    // Clean up the translation and analysis
    translation = translation.replace('Translation:', '').replace(/^["']|["']$/g, '').trim();
-   analysis = analysis ? analysis.trim() : '';
+   analysis = analysis.trim();
+
+   // Verify we have content before returning
+   if (!translation || !analysis) {
+     throw new Error('Empty translation or analysis after processing');
+   }
 
    return NextResponse.json({
-     translation: translation,
-     analysis: analysis
+     translation,
+     analysis
    });
 
- } catch (error) {
+} catch (error) {
    console.error('Translation error:', error);
    return NextResponse.json({ 
      error: true,
-     message: 'Translation failed: ' + error.message 
+     message: 'Translation failed: ' + error.message,
+     details: process.env.NODE_ENV === 'development' ? error.stack : undefined
    }, { 
-     status: 500 
+     status: error.status || 500 
    });
- }
+}
 }

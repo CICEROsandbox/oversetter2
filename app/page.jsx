@@ -102,71 +102,81 @@ const handleDownload = () => {
           </div>
 
 {paragraph.analysis && (
-  <div className="analysis-container ml-[50%] pl-5 mb-4">
-    {/* Strengths Section */}
-    {paragraph.analysis.includes('Strengths:') && (
-      <div className="strengths-section mb-4">
-        <h3 className="text-gray-700 font-semibold mb-2">Strengths:</h3>
-        <ol className="list-decimal pl-5 space-y-2">
+  <details className="analysis-section mt-2 border rounded-lg">
+    <summary className="p-3 bg-gray-50 font-medium cursor-pointer hover:bg-gray-100">
+      Show Analysis
+    </summary>
+    <div className="p-4">
+      {/* Strengths Section */}
+      {paragraph.analysis.includes('Strengths:') && (
+        <div className="strengths-section mb-4">
+          <h3 className="text-gray-700 font-semibold mb-2">Strengths:</h3>
+          <ol className="list-decimal pl-5 space-y-2">
+            {paragraph.analysis
+              .split('Strengths:')[1]
+              .split('Areas for improvement:')[0]
+              .split(/\d\./)
+              .filter(str => str.trim())
+              .map((strength, i) => (
+                <li key={i} className="text-gray-600">
+                  {strength.trim()}
+                </li>
+              ))}
+          </ol>
+        </div>
+      )}
+
+      {/* Areas for Improvement Section */}
+      {paragraph.analysis.includes('Areas for improvement:') && (
+        <div className="improvements-section">
+          <h3 className="text-gray-700 font-semibold mb-2">Areas for improvement:</h3>
           {paragraph.analysis
-            .split('Strengths:')[1]
-            .split('Areas for improvement:')[0]
+            .split('Areas for improvement:')[1]
             .split(/\d\./)
             .filter(str => str.trim())
-            .map((strength, i) => (
-              <li key={i} className="text-gray-600">
-                {strength.trim()}
-              </li>
-            ))}
-        </ol>
-      </div>
-    )}
-
-    {/* Areas for Improvement Section */}
-    {paragraph.analysis.includes('Areas for improvement:') && (
-      <div className="improvements-section">
-        <h3 className="text-gray-700 font-semibold mb-2">Areas for improvement:</h3>
-        {paragraph.analysis
-          .split('Areas for improvement:')[1]
-          .split(/\d\./)
-          .filter(str => str.trim())
-          .map((paragraph, i) => {
-            if (!paragraph.trim()) return null;
-            return (
-              <div key={i} className="improvement-paragraph mb-4 border-l-2 border-blue-300 pl-3">
-                <h4 className="font-medium text-gray-700 mb-2">
-                  {i + 1}. {paragraph.split('\n')[0].trim()}
-                </h4>
-                <div className="space-y-2">
-                  {paragraph
-                    .split('-')
-                    .filter(point => point.trim())
-                    .map((point, j) => {
-                      const formattedPoint = point.replace(
-                        /\*\*(.*?)\*\*/g,
-                        (_, text) => `<span class="font-medium text-blue-600">${text}</span>`
-                      );
-
-                      return (
-                        <div 
-                          key={j}
-                          className="text-gray-600 ml-2"
-                          dangerouslySetInnerHTML={{
-                            __html: point.trim().startsWith('Current') || 
-                                   point.trim().startsWith('Suggested') ? 
-                                   `• ${formattedPoint.trim()}` : 
-                                   formattedPoint.trim()
-                          }}
-                        />
-                      );
-                    })}
+            .map((paragraph, i) => {
+              if (!paragraph.trim()) return null;
+              return (
+                <div key={i} className="improvement-paragraph mb-4">
+                  <h4 className="font-medium text-gray-700 mb-2">
+                    {i + 1}. {paragraph.split('\n')[0].trim()}
+                  </h4>
+                  <div className="space-y-2">
+                    {paragraph
+                      .split('-')
+                      .filter(point => point.trim())
+                      .map((point, j) => {
+                        if (!point.trim()) return null;
+                        if (point.includes('Current issue:')) {
+                          return (
+                            <div key={j} className="ml-4 mb-2">
+                              <div className="text-red-600 font-semibold mb-1">Issue:</div>
+                              <div className="text-gray-700 ml-2">
+                                {point.replace('Current issue:', '').trim()}
+                              </div>
+                            </div>
+                          );
+                        }
+                        if (point.includes('Suggested improvement:')) {
+                          return (
+                            <div key={j} className="ml-4 mb-2">
+                              <div className="text-green-600 font-semibold mb-1">Suggestion:</div>
+                              <div className="text-gray-700 ml-2">
+                                {point.replace('Suggested improvement:', '').trim()}
+                              </div>
+                            </div>
+                          );
+                        }
+                        return null;
+                      })}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-      </div>
-    )}
-  </div>
+              );
+            })}
+        </div>
+      )}
+    </div>
+  </details>
 )}
 
           <div style={{ marginTop: '10px' }}>

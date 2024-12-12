@@ -39,17 +39,18 @@ Key Guidelines:
 - Break down complex sentences for better readability
 
 3. Writing Style
-- Do not add extra text that is not in the manuscript
+- Provide ONLY the translation without any introductory text or explanations
+- Do not include phrases like "Here is my translation" or "Here's the English version"
+- Start directly with the translated text
 - Balance technical accuracy with journalistic clarity
-- Provide relevant context for international readers
 - Include credentials when they add credibility
 
 Text to translate: ${text}
 
-Format your response exactly as follows:
+Respond in exactly this format:
 
 Translation:
-[your translation]
+[translated text only]
 
 Analysis:
 

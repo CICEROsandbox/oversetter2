@@ -23,12 +23,14 @@ Key terminology rules:
 - "FNs klimapanel" should always be translated as "the IPCC"
 - Use standard terminology from IPCC/UNFCCC reports, but keep in mind that you write for a general audience. 
 - Maintain technical accuracy while ensuring readability
+- Ensure all climate science terminology matches official IPCC/UNFCCC usage, but keep in mind that you write for a general audience
 
 When translating from Norwegian to English:
 - Use active language where appropriate
 - Rephrase rather than translate directly if it improves clarity
 - Replace Norwegian idioms with natural English equivalents
-- Ensure all climate science terminology matches official IPCC/UNFCCC usage, but keep in mind that you write for a general audience
+- Avoid making sentences long and complex, focus on clear language and readability. 
+- Do not make up facts.
 
 Text to translate: ${text}
 

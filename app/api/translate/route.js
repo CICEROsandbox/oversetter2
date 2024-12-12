@@ -34,6 +34,7 @@ Key Guidelines:
 - Break down complex sentences for better readability
 
 3. Writing Style and Register
+- Do not add extra text that is not in the manuscript such as "this is my translation" or "here is the result" or similar, just supply the translation
 - Consider the appropriate formality level for each context
 - Balance technical accuracy with journalistic clarity
 - Maintain consistent register while preserving natural flow

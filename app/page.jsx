@@ -20,10 +20,14 @@ export default function Home() {
 
       const data = await response.json();
       
+      if (!response.ok) {
+        throw new Error(data.message || 'Translation failed');
+      }
+      
       updatedParagraphs[index] = {
         ...updatedParagraphs[index],
-        english: data.translation,
-        analysis: data.analysis,
+        english: data.translation || '',
+        analysis: data.analysis || '',
         isTranslating: false
       };
       setParagraphs([...updatedParagraphs]);
@@ -118,12 +122,12 @@ export default function Home() {
                       <div className="space-y-2">
                         {paragraph.analysis
                           .split('Strengths:')[1]
-                          .split('Areas for improvement:')[0]
-                          .split('\n')
+                          ?.split('Areas for improvement:')[0]
+                          ?.split('-')
                           .filter(line => line.trim())
                           .map((strength, i) => (
                             <div key={i} className="text-gray-600 ml-2">
-                              {strength.trim()}
+                              • {strength.trim()}
                             </div>
                           ))}
                       </div>
@@ -135,20 +139,24 @@ export default function Home() {
                       <div className="space-y-4">
                         {paragraph.analysis
                           .split('Areas for improvement:')[1]
-                          .split('Issue:')
+                          ?.split(/Issue:|Suggestion:/)
                           .filter(str => str.trim())
-                          .map((section, i) => {
-                            const parts = section.split('Suggestion:');
-                            if (parts.length !== 2) return null;
-                            return (
-                              <div key={i} className="mb-4">
-                                <div className="text-red-600 font-semibold">Issue:</div>
-                                <div className="ml-4 mb-2">{parts[0].trim()}</div>
-                                <div className="text-green-600 font-semibold">Suggestion:</div>
-                                <div className="ml-4">{parts[1].trim()}</div>
-                              </div>
-                            );
-                          })}
+                          .reduce((acc, curr, i) => {
+                            if (i % 2 === 0) {
+                              acc.push({ issue: curr.trim() });
+                            } else {
+                              acc[acc.length - 1].suggestion = curr.trim();
+                            }
+                            return acc;
+                          }, [])
+                          .map((item, i) => (
+                            <div key={i} className="mb-4">
+                              <div className="text-red-600 font-semibold">Issue:</div>
+                              <div className="ml-4 mb-2">{item.issue}</div>
+                              <div className="text-green-600 font-semibold">Suggestion:</div>
+                              <div className="ml-4">{item.suggestion}</div>
+                            </div>
+                          ))}
                       </div>
                     </div>
                   </div>

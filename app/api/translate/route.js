@@ -46,35 +46,43 @@ Key Guidelines:
 - Provide relevant context for international readers
 - Include credentials when they add credibility
 
-4. Attribution and Context
-- Define organizations and roles on first mention
-- Include relevant credentials for quoted experts
-- Add geographic or cultural context when needed
-
 Text to translate: ${text}
 
-Format your response exactly as:
+Format your response exactly as follows:
+
 Translation:
 [your translation]
 
 Analysis:
-A. Language Optimization
-- Evaluate register consistency and appropriateness
-- Assess flow and readability
-- Suggest alternatives in **bold**
-- Note any places where combining or separating sentences would help
 
-B. Scientific Communication
-- Evaluate technical accuracy
-- Assess accessibility for general audience
-- Note terminology choices
-- Check whether expert credentials and context are appropriately provided
+Strengths:
+[List 4-5 key strengths of the translation, using numbers]
 
-C. Translation Choices
-- Explain significant departures from source text
-- Highlight cultural adaptations
-- Note challenging translation decisions
-- Explain choices in measurement and context presentation`
+Areas for improvement:
+
+1. First paragraph:
+- Identify style and word choice issues
+- Suggest better alternatives in **bold** format
+- Note any structural improvements
+- Focus on register consistency
+
+2. Second paragraph:
+- Identify style and word choice issues
+- Suggest better alternatives in **bold** format
+- Note any structural improvements
+- Focus on register consistency
+
+3. Third paragraph:
+- Identify style and word choice issues
+- Suggest better alternatives in **bold** format
+- Note any structural improvements
+- Focus on register consistency
+
+4. Fourth paragraph:
+- Identify style and word choice issues
+- Suggest better alternatives in **bold** format
+- Note any structural improvements
+- Focus on register consistency`
        }
      ]
    });

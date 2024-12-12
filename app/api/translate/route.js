@@ -2,16 +2,29 @@ import { NextResponse } from 'next/server';
 import { Anthropic } from '@anthropic-ai/sdk';
 
 export const maxDuration = 60;
+export const dynamic = 'force-dynamic';
 
 export async function POST(request) {
   try {
     const { text } = await request.json();
 
-    if (!text) {
+    // Input validation
+    if (!text || typeof text !== 'string') {
       return NextResponse.json({
+        error: 'Invalid input: Text is required and must be a string',
         translation: '',
         analysis: ''
       }, { status: 400 });
+    }
+
+    // Check API key
+    if (!process.env.ANTHROPIC_API_KEY) {
+      console.error('Missing Anthropic API key');
+      return NextResponse.json({
+        error: 'Configuration error',
+        translation: '',
+        analysis: ''
+      }, { status: 500 });
     }
 
     const anthropic = new Anthropic({
@@ -61,44 +74,67 @@ Areas for improvement:
 Issue: [describe issue]
 Suggestion: [improvement suggestion]`;
 
-    const prompt = `${Anthropic.HUMAN_PROMPT}${systemInstructions}${Anthropic.AI_PROMPT}`;
-
-    const completion = await anthropic.completions.create({
+    const completion = await anthropic.messages.create({
       model: "claude-3-opus-20240229",
-      max_tokens_to_sample: 1000,
-      prompt,
-      temperature: 0,
-      stop_sequences: [Anthropic.HUMAN_PROMPT]
+      max_tokens: 1000,
+      messages: [{
+        role: "user",
+        content: systemInstructions
+      }],
+      temperature: 0
     });
 
-    if (!completion?.completion) {
+    if (!completion?.content?.[0]?.text) {
+      console.error('Empty response from Anthropic API');
       return NextResponse.json({
+        error: 'Empty translation response',
         translation: '',
         analysis: ''
       }, { status: 500 });
     }
 
-    const response = completion.completion;
+    const response = completion.content[0].text;
     
     let translationPart = '';
     let analysisPart = '';
     
+    // More robust parsing
     if (response.includes('Analysis:')) {
-      const parts = response.split('Analysis:');
-      translationPart = (parts[0] || '').replace('Translation:', '').trim();
-      analysisPart = (parts[1] || '').trim();
+      const [translationSection, analysisSection] = response.split('Analysis:');
+      translationPart = translationSection.replace('Translation:', '').trim();
+      analysisPart = analysisSection.trim();
     } else {
       translationPart = response.replace('Translation:', '').trim();
     }
 
+    if (!translationPart) {
+      console.error('Failed to parse translation from response');
+      return NextResponse.json({
+        error: 'Failed to parse translation',
+        translation: '',
+        analysis: ''
+      }, { status: 500 });
+    }
+
     return NextResponse.json({
-      translation: translationPart || '',
-      analysis: analysisPart || ''
+      translation: translationPart,
+      analysis: analysisPart
     });
 
   } catch (error) {
     console.error('Translation error:', error);
+    
+    // More specific error handling
+    if (error.status === 401) {
+      return NextResponse.json({
+        error: 'Authentication failed',
+        translation: '',
+        analysis: ''
+      }, { status: 401 });
+    }
+    
     return NextResponse.json({ 
+      error: error.message || 'Internal server error',
       translation: '',
       analysis: ''
     }, { 

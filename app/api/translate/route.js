@@ -9,13 +9,8 @@ export async function POST(request) {
 
     if (!text) {
       return NextResponse.json({
-        success: false,
-        error: true,
-        message: 'No text provided for translation',
-        data: {
-          translation: '',
-          analysis: ''
-        }
+        translation: '',
+        analysis: ''
       }, { status: 400 });
     }
 
@@ -61,8 +56,9 @@ Analysis:
 Strengths:
 - [List 2-3 key strengths of the translation]
 
-Suggestions for improvement:
-- [List 2-3 specific suggestions to enhance clarity, accuracy, or style]`;
+Areas for improvement:
+Issue: [describe issue]
+Suggestion: [improvement suggestion]`;
 
     const prompt = `${Anthropic.HUMAN_PROMPT}${systemInstructions}${Anthropic.AI_PROMPT}`;
 
@@ -76,13 +72,8 @@ Suggestions for improvement:
 
     if (!completion?.completion) {
       return NextResponse.json({
-        success: false,
-        error: true,
-        message: 'No response received from translation service',
-        data: {
-          translation: '',
-          analysis: ''
-        }
+        translation: '',
+        analysis: ''
       }, { status: 500 });
     }
 
@@ -97,29 +88,18 @@ Suggestions for improvement:
       analysisPart = (parts[1] || '').trim();
     } else {
       translationPart = response.replace('Translation:', '').trim();
-      analysisPart = '';
     }
 
     return NextResponse.json({
-      success: true,
-      error: false,
-      data: {
-        translation: translationPart || '',
-        analysis: analysisPart || ''
-      }
+      translation: translationPart || '',
+      analysis: analysisPart || ''
     });
 
   } catch (error) {
     console.error('Translation error:', error);
     return NextResponse.json({ 
-      success: false,
-      error: true,
-      message: 'Translation failed: ' + error.message,
-      data: {
-        translation: '',
-        analysis: ''
-      },
-      details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      translation: '',
+      analysis: ''
     }, { 
       status: error.status || 500 
     });

@@ -1,23 +1,23 @@
 import { NextResponse } from 'next/server';
 import { Anthropic } from '@anthropic-ai/sdk';
-export const maxDuration = 300; // Increase to 5 minutes
+export const maxDuration = 300;
 
 export async function POST(request) {
- try {
-   const { text } = await request.json();
-   
-   const { Anthropic } = await import('@anthropic-ai/sdk');
-   const anthropic = new Anthropic({
-     apiKey: process.env.ANTHROPIC_API_KEY
-   });
+  try {
+    const { text } = await request.json();
+    
+    const { Anthropic } = await import('@anthropic-ai/sdk');
+    const anthropic = new Anthropic({
+      apiKey: process.env.ANTHROPIC_API_KEY
+    });
 
-   const message = await anthropic.messages.create({
-     model: "claude-3-opus-20240229",
-     max_tokens: 1000,
-     messages: [
-       {
-         role: "user",
-         content: `You are a professional translator combining expertise in:
+    const message = await anthropic.messages.create({
+      model: "claude-3-opus-20240229",
+      max_tokens: 1000,
+      messages: [
+        {
+          role: "user",
+          content: `You are a professional translator combining expertise in:
 - Climate science (IPCC/UNFCCC terminology)
 - Science journalism and communication
 - Academic English writing
@@ -64,8 +64,6 @@ Strengths:
 
 Areas for improvement:
 
-Areas for improvement:
-
 1. First paragraph:
 - Style and word choice issues:
   - Current issue: [describe]
@@ -76,7 +74,7 @@ Areas for improvement:
 - Structural improvements:
   - Current issue: [describe]
   - Suggested improvement: **[better structure]**
-  
+
 2. Second paragraph:
 - Style and word choice issues:
   - Current issue: [describe]
@@ -108,42 +106,41 @@ Areas for improvement:
   - Suggested improvement: **[consistent register alternative]**
 - Structural improvements:
   - Current issue: [describe]
-  - Suggested improvement: **[better structure]**
-  
-       }
-     ]
-   });
+  - Suggested improvement: **[better structure]**`
+        }
+      ]
+    });
 
-   const response = message.content[0].text;
-   let [translation, analysis] = response.split('Analysis:');
-   
-   // More robust error handling and cleaning
-   if (!translation || !analysis) {
-     throw new Error('Invalid response format from API');
-   }
+    const response = message.content[0].text;
+    let [translation, analysis] = response.split('Analysis:');
+    
+    // More robust error handling and cleaning
+    if (!translation || !analysis) {
+      throw new Error('Invalid response format from API');
+    }
 
-   // Clean up the translation and analysis
-   translation = translation.replace('Translation:', '').replace(/^["']|["']$/g, '').trim();
-   analysis = analysis.trim();
+    // Clean up the translation and analysis
+    translation = translation.replace('Translation:', '').replace(/^["']|["']$/g, '').trim();
+    analysis = analysis.trim();
 
-   // Verify we have content before returning
-   if (!translation || !analysis) {
-     throw new Error('Empty translation or analysis after processing');
-   }
+    // Verify we have content before returning
+    if (!translation || !analysis) {
+      throw new Error('Empty translation or analysis after processing');
+    }
 
-   return NextResponse.json({
-     translation,
-     analysis
-   });
+    return NextResponse.json({
+      translation,
+      analysis
+    });
 
-} catch (error) {
-   console.error('Translation error:', error);
-   return NextResponse.json({ 
-     error: true,
-     message: 'Translation failed: ' + error.message,
-     details: process.env.NODE_ENV === 'development' ? error.stack : undefined
-   }, { 
-     status: error.status || 500 
-   });
-}
+  } catch (error) {
+    console.error('Translation error:', error);
+    return NextResponse.json({ 
+      error: true,
+      message: 'Translation failed: ' + error.message,
+      details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    }, { 
+      status: error.status || 500 
+    });
+  }
 }

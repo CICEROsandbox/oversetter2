@@ -11,8 +11,6 @@ export async function POST(request) {
       apiKey: process.env.ANTHROPIC_API_KEY
     });
 
-    // Construct the prompt using Anthropic's required formatting.
-    // Include the entire instruction plus the user text.
     const systemInstructions = `You are a professional translator combining expertise in:
 - Climate science (IPCC/UNFCCC terminology)
 - Science journalism and communication
@@ -33,13 +31,9 @@ Key Guidelines:
 - Convert Norwegian idioms to natural English equivalents
 - Break down complex sentences for better readability
 
-3. Writing Style and Register
-- Do not add extra text that is not in the manuscript such as "this is my translation" or "here is the result" or similar, just supply the translation
-- Consider the appropriate formality level for each context
+3. Writing Style
+- Do not add extra text that is not in the manuscript
 - Balance technical accuracy with journalistic clarity
-- Maintain consistent register while preserving natural flow
-- Consider whether informal phrases enhance or detract from the message
-- Choose words that best serve the content's purpose
 - Provide relevant context for international readers
 - Include credentials when they add credibility
 
@@ -53,73 +47,23 @@ Translation:
 Analysis:
 
 Strengths:
-1. [Technical accuracy strength]
-2. [Clarity and readability strength]
-3. [Register consistency strength]
-4. [Language adaptation strength]
-5. [Context and attribution strength]
+- [List 2-3 key strengths of the translation]
 
-Areas for improvement:
+Suggestions for improvement:
+- [List 2-3 specific suggestions to enhance clarity, accuracy, or style]`;
 
-1. First paragraph:
-- Style and word choice issues:
-  - Current issue: [describe]
-  - Suggested improvement: **[formal alternative]**
-- Register consistency:
-  - Current issue: [describe]
-  - Suggested improvement: **[consistent register alternative]**
-- Structural improvements:
-  - Current issue: [describe]
-  - Suggested improvement: **[better structure]**
-
-2. Second paragraph:
-- Style and word choice issues:
-  - Current issue: [describe]
-  - Suggested improvement: **[formal alternative]**
-- Register consistency:
-  - Current issue: [describe]
-  - Suggested improvement: **[consistent register alternative]**
-- Structural improvements:
-  - Current issue: [describe]
-  - Suggested improvement: **[better structure]**
-
-3. Third paragraph:
-- Style and word choice issues:
-  - Current issue: [describe]
-  - Suggested improvement: **[formal alternative]**
-- Register consistency:
-  - Current issue: [describe]
-  - Suggested improvement: **[consistent register alternative]**
-- Structural improvements:
-  - Current issue: [describe]
-  - Suggested improvement: **[better structure]**
-
-4. Fourth paragraph:
-- Style and word choice issues:
-  - Current issue: [describe]
-  - Suggested improvement: **[formal alternative]**
-- Register consistency:
-  - Current issue: [describe]
-  - Suggested improvement: **[consistent register alternative]**
-- Structural improvements:
-  - Current issue: [describe]
-  - Suggested improvement: **[better structure]**`;
-
-    // Construct the final prompt. Claude expects a structure with HUMAN_PROMPT and AI_PROMPT.
     const prompt = `${Anthropic.HUMAN_PROMPT}${systemInstructions}${Anthropic.AI_PROMPT}`;
 
-    // Call the Anthropic API using completions.create
     const completion = await anthropic.completions.create({
-      model: "claude-2", // Make sure the model name is correct and available.
+      model: "claude-2",
       max_tokens_to_sample: 1000,
       prompt,
-      temperature: 0, // Optional, adjust temperature as needed.
+      temperature: 0,
       stop_sequences: [Anthropic.HUMAN_PROMPT]
     });
 
     const response = completion.completion;
 
-    // Now parse the response into translation and analysis.
     let [translationPart, analysisPart] = response.split('Analysis:');
 
     if (!translationPart || !analysisPart) {

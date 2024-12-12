@@ -51,13 +51,9 @@ Translation:
 
 Analysis:
 
-Strengths:
-(Provide detailed, text-specific strengths. For example, discuss terminology accuracy, clarity, adaptation, etc.)
-
 Areas for improvement:
-(Provide paragraph-specific and detailed feedback on style, word choice, register consistency, and structure, using the format below.)
+(Provide detailed, text-specific Areas for improvement. For example, discuss terminology accuracy, clarity, adaptation, etc.)
 
-1. First paragraph:
 - Style and word choice issues:
   - Current issue: [describe]
   - Suggested improvement: **[formal alternative]**
@@ -68,7 +64,7 @@ Areas for improvement:
   - Current issue: [describe]
   - Suggested improvement: **[better structure]**
 
-(Repeat for subsequent paragraphs.)`;
+;
 
     // Construct the final prompt. Claude expects a structure with HUMAN_PROMPT and AI_PROMPT.
     const prompt = `${Anthropic.HUMAN_PROMPT}${systemInstructions}${Anthropic.AI_PROMPT}`;

@@ -62,9 +62,7 @@ Areas for improvement:
   - Suggested improvement: **[consistent register alternative]**
 - Structural improvements:
   - Current issue: [describe]
-  - Suggested improvement: **[better structure]**
-
-;
+  - Suggested improvement: **[better structure]**`;
 
     // Construct the final prompt. Claude expects a structure with HUMAN_PROMPT and AI_PROMPT.
     const prompt = `${Anthropic.HUMAN_PROMPT}${systemInstructions}${Anthropic.AI_PROMPT}`;

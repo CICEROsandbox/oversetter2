@@ -34,3 +34,15 @@
 .translation-column {
   margin-top: 10px;
 }
+
+.analysis-container {
+  @apply bg-gray-50 rounded-lg p-4 shadow-sm;
+}
+
+.improvement-paragraph {
+  @apply bg-white rounded p-3 shadow-sm;
+}
+
+.improvement-paragraph:hover {
+  @apply shadow-md transition-shadow duration-200;
+}

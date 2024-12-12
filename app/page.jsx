@@ -58,196 +58,149 @@ const handleDownload = () => {
   }
 };
 
-  return (
-<div style={{ display: 'flex', gap: '20px', marginBottom: '10px' }}>
-  {/* Norwegian textarea */}
-  <div style={{ width: '50%' }}>
-    <textarea
-      style={{
-        width: '100%',
-        height: '150px',
-        border: '1px solid #ccc',
-        padding: '10px',
-        backgroundColor: '#f5f5f5'
-      }}
-      placeholder="Norsk tekst her. Tekst boks skaleres"
-      value={paragraph.norwegian}
-      onChange={(e) => {
-        const updated = [...paragraphs];
-        updated[index].norwegian = e.target.value;
-        setParagraphs(updated);
-      }}
-    />
-  </div>
-
-  {/* English textarea and analysis */}
-  <div style={{ width: '50%' }}>
-    <textarea
-      style={{
-        width: '100%',
-        height: '150px',
-        border: '1px solid #ccc',
-        padding: '10px',
-        backgroundColor: '#f5f5f5'
-      }}
-      placeholder="Oversettelse her. Redigerbart felt."
-      value={paragraph.english}
-      onChange={(e) => {
-        const updated = [...paragraphs];
-        updated[index].english = e.target.value;
-        setParagraphs(updated);
-      }}
-    />
-
-    {paragraph.analysis && (
-      <details className="analysis-section mt-2 border rounded-lg">
-        <summary className="p-3 bg-gray-50 font-medium cursor-pointer hover:bg-gray-100">
-          Show Analysis
-        </summary>
-        <div className="p-4">
-          {/* Strengths Section */}
-          <div className="mb-4">
-            <h3 className="text-gray-700 font-semibold mb-2">Strengths</h3>
-            <div className="space-y-2">
-              {paragraph.analysis
-                .split('Strengths:')[1]
-                .split('Areas for improvement:')[0]
-                .split('\n')
-                .filter(line => line.trim())
-                .map((strength, i) => (
-                  <div key={i} className="text-gray-600 ml-2">
-                    {strength.trim()}
-                  </div>
-                ))}
-            </div>
-          </div>
-
-          {/* Improvement Section */}
-          <div>
-            <h3 className="text-gray-700 font-semibold mb-2">Areas for improvement</h3>
-            <div className="space-y-4">
-              {paragraph.analysis
-                .split('Areas for improvement:')[1]
-                .split('Issue:')
-                .filter(str => str.trim())
-                .map((section, i) => {
-                  const parts = section.split('Suggestion:');
-                  if (parts.length !== 2) return null;
-                  return (
-                    <div key={i} className="mb-4">
-                      <div className="text-red-600 font-semibold">Issue:</div>
-                      <div className="ml-4 mb-2">{parts[0].trim()}</div>
-                      <div className="text-green-600 font-semibold">Suggestion:</div>
-                      <div className="ml-4">{parts[1].trim()}</div>
-                    </div>
-                  );
-                })}
-            </div>
-          </div>
-        </div>
-      </details>
-    )}
-  </div>
-</div>
-
-{paragraph.analysis && (
-  <details className="analysis-section mt-2 border rounded-lg">
-    <summary className="p-3 bg-gray-50 font-medium cursor-pointer hover:bg-gray-100">
-      Show Analysis
-    </summary>
-    <div className="p-4">
-      {/* Strengths Section */}
-      <div className="mb-4">
-        <h3 className="text-gray-700 font-semibold mb-2">Strengths:</h3>
-        <ul className="list-disc pl-5 space-y-2">
-          {paragraph.analysis
-            .split('Strengths:')[1]
-            .split('Areas for improvement:')[0]
-            .split(/\n/)
-            .filter(str => str.trim() && str.startsWith('-'))
-            .map((strength, i) => (
-              <li key={i} className="text-gray-600">
-                {strength.replace('-', '').trim()}
-              </li>
-            ))}
-        </ul>
-      </div>
-
-      {/* Areas for Improvement */}
-      <div>
-        <h3 className="text-gray-700 font-semibold mb-2">Areas for improvement:</h3>
-        <div className="space-y-4">
-          {paragraph.analysis
-            .split('Areas for improvement:')[1]
-            .split(/Current issue:|Suggested improvement:/)
-            .filter(str => str.trim())
-            .reduce((pairs, item, i, arr) => {
-              if (i % 2 === 0) {
-                pairs.push({
-                  issue: item.trim(),
-                  suggestion: arr[i + 1]?.trim() || ''
-                });
-              }
-              return pairs;
-            }, [])
-            .map((pair, i) => (
-              <div key={i} className="ml-2">
-                <div className="text-red-600 font-semibold">Issue:</div>
-                <div className="ml-4 mb-2">{pair.issue}</div>
-                <div className="text-green-600 font-semibold">Suggestion:</div>
-                <div className="ml-4">{pair.suggestion}</div>
-              </div>
-            ))}
-        </div>
-      </div>
-    </div>
-  </details>
-)}
-          <div style={{ marginTop: '10px' }}>
-            <button
+return (
+  <div style={{ padding: '20px' }}>
+    <h1 style={{ fontSize: '24px', marginBottom: '20px', fontFamily: 'serif' }}>
+      Norsk til engelsk oversetter
+    </h1>
+    
+    {paragraphs.map((paragraph, index) => (
+      <div key={index} style={{ marginBottom: '20px' }}>
+        <div style={{ display: 'flex', gap: '20px', marginBottom: '10px' }}>
+          {/* Norwegian textarea */}
+          <div style={{ width: '50%' }}>
+            <textarea
               style={{
-                marginRight: '10px',
-                padding: '5px 15px',
-                backgroundColor: paragraph.isTranslating ? '#cccccc' : '#e9e9e9',
-                border: '1px solid #999',
-                cursor: paragraph.isTranslating ? 'not-allowed' : 'pointer'
+                width: '100%',
+                height: '150px',
+                border: '1px solid #ccc',
+                padding: '10px',
+                backgroundColor: '#f5f5f5'
               }}
-              onClick={() => handleTranslate(index)}
-              disabled={paragraph.isTranslating}
-            >
-              {paragraph.isTranslating ? 'Oversetter...' : 'Oversett'}
-            </button>
-            {index === paragraphs.length - 1 && (
-              <button
-                style={{
-                  padding: '5px 15px',
-                  backgroundColor: '#e9e9e9',
-                  border: '1px solid #999',
-                  cursor: 'pointer'
-                }}
-                onClick={() => setParagraphs([...paragraphs, { norwegian: '', english: '', analysis: '', isTranslating: false }])}
-              >
-                Neste avsnitt
-              </button>
+              placeholder="Norsk tekst her. Tekst boks skaleres"
+              value={paragraph.norwegian}
+              onChange={(e) => {
+                const updated = [...paragraphs];
+                updated[index].norwegian = e.target.value;
+                setParagraphs(updated);
+              }}
+            />
+          </div>
+
+          {/* English textarea and analysis */}
+          <div style={{ width: '50%' }}>
+            <textarea
+              style={{
+                width: '100%',
+                height: '150px',
+                border: '1px solid #ccc',
+                padding: '10px',
+                backgroundColor: '#f5f5f5'
+              }}
+              placeholder="Oversettelse her. Redigerbart felt."
+              value={paragraph.english}
+              onChange={(e) => {
+                const updated = [...paragraphs];
+                updated[index].english = e.target.value;
+                setParagraphs(updated);
+              }}
+            />
+
+            {paragraph.analysis && (
+              <details className="analysis-section mt-2 border rounded-lg">
+                <summary className="p-3 bg-gray-50 font-medium cursor-pointer hover:bg-gray-100">
+                  Show Analysis
+                </summary>
+                <div className="p-4">
+                  {/* Strengths Section */}
+                  <div className="mb-4">
+                    <h3 className="text-gray-700 font-semibold mb-2">Strengths</h3>
+                    <div className="space-y-2">
+                      {paragraph.analysis
+                        .split('Strengths:')[1]
+                        .split('Areas for improvement:')[0]
+                        .split('\n')
+                        .filter(line => line.trim())
+                        .map((strength, i) => (
+                          <div key={i} className="text-gray-600 ml-2">
+                            {strength.trim()}
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+
+                  {/* Improvement Section */}
+                  <div>
+                    <h3 className="text-gray-700 font-semibold mb-2">Areas for improvement</h3>
+                    <div className="space-y-4">
+                      {paragraph.analysis
+                        .split('Areas for improvement:')[1]
+                        .split('Issue:')
+                        .filter(str => str.trim())
+                        .map((section, i) => {
+                          const parts = section.split('Suggestion:');
+                          if (parts.length !== 2) return null;
+                          return (
+                            <div key={i} className="mb-4">
+                              <div className="text-red-600 font-semibold">Issue:</div>
+                              <div className="ml-4 mb-2">{parts[0].trim()}</div>
+                              <div className="text-green-600 font-semibold">Suggestion:</div>
+                              <div className="ml-4">{parts[1].trim()}</div>
+                            </div>
+                          );
+                        })}
+                    </div>
+                  </div>
+                </div>
+              </details>
             )}
           </div>
         </div>
-      ))}
 
-      {paragraphs.length > 1 && (
-        <button
-          style={{
-            padding: '5px 15px',
-            backgroundColor: '#e9e9e9',
-            border: '1px solid #999',
-            cursor: 'pointer',
-            marginTop: '20px'
-          }}
-          onClick={handleDownload}
-        >
-          Sett sammen tekst
-        </button>
-      )}
-    </div>
-  );
-}
+        <div style={{ marginTop: '10px' }}>
+          <button
+            style={{
+              marginRight: '10px',
+              padding: '5px 15px',
+              backgroundColor: paragraph.isTranslating ? '#cccccc' : '#e9e9e9',
+              border: '1px solid #999',
+              cursor: paragraph.isTranslating ? 'not-allowed' : 'pointer'
+            }}
+            onClick={() => handleTranslate(index)}
+            disabled={paragraph.isTranslating}
+          >
+            {paragraph.isTranslating ? 'Oversetter...' : 'Oversett'}
+          </button>
+          {index === paragraphs.length - 1 && (
+            <button
+              style={{
+                padding: '5px 15px',
+                backgroundColor: '#e9e9e9',
+                border: '1px solid #999',
+                cursor: 'pointer'
+              }}
+              onClick={() => setParagraphs([...paragraphs, { norwegian: '', english: '', analysis: '', isTranslating: false }])}
+            >
+              Neste avsnitt
+            </button>
+          )}
+        </div>
+      </div>
+    ))}
+
+    {paragraphs.length > 1 && (
+      <button
+        style={{
+          padding: '5px 15px',
+          backgroundColor: '#e9e9e9',
+          border: '1px solid #999',
+          cursor: 'pointer',
+          marginTop: '20px'
+        }}
+        onClick={handleDownload}
+      >
+        Sett sammen tekst
+      </button>
+    )}
+  </div>
+);

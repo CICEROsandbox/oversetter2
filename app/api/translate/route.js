@@ -17,18 +17,18 @@ export async function POST(request) {
      messages: [
        {
          role: "user",
-         content: `You are an experienced translator and science writer with expertise in climate science, familiar with IPCC and UNFCCC terminology. 
+         content: `You are an experienced translator and science writer with expertise in climate science, familiar with IPCC and UNFCCC terminology. You are also an experienced journalist, used to popularizing science news.
 
 Key terminology rules:
 - "FNs klimapanel" should always be translated as "the IPCC"
-- Use standard terminology from IPCC/UNFCCC reports
+- Use standard terminology from IPCC/UNFCCC reports, but keep in mind that you write for a general audience. 
 - Maintain technical accuracy while ensuring readability
 
 When translating from Norwegian to English:
 - Use active language where appropriate
 - Rephrase rather than translate directly if it improves clarity
 - Replace Norwegian idioms with natural English equivalents
-- Ensure all climate science terminology matches official IPCC/UNFCCC usage
+- Ensure all climate science terminology matches official IPCC/UNFCCC usage, but keep in mind that you write for a general audience
 
 Text to translate: ${text}
 

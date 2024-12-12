@@ -64,7 +64,7 @@ Suggestion: [improvement suggestion]`;
     const prompt = `${Anthropic.HUMAN_PROMPT}${systemInstructions}${Anthropic.AI_PROMPT}`;
 
     const completion = await anthropic.completions.create({
-      model: "claude-2",
+      model: "claude-3-opus-20240229",
       max_tokens_to_sample: 1000,
       prompt,
       temperature: 0,

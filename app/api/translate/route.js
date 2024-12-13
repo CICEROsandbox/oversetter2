@@ -10,6 +10,7 @@ export async function POST(request) {
     
     if (!text) {
       return NextResponse.json({
+        error: 'No text provided',
         translation: '',
         analysis: ''
       }, { status: 400 });
@@ -74,6 +75,7 @@ Suggestion: [improvement suggestion]`;
 
     if (!completion?.content?.[0]?.text) {
       return NextResponse.json({
+        error: 'Failed to get translation',
         translation: '',
         analysis: ''
       }, { status: 500 });
@@ -100,6 +102,7 @@ Suggestion: [improvement suggestion]`;
   } catch (error) {
     console.error('Translation error:', error);
     return NextResponse.json({ 
+      error: error.message || 'Translation failed',
       translation: '',
       analysis: ''
     }, { 

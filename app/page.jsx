@@ -8,6 +8,7 @@ export default function Home() {
 
   const handleTranslate = async (index) => {
     try {
+      console.log('Starting translation...'); // Debug log
       const updatedParagraphs = [...paragraphs];
       updatedParagraphs[index].isTranslating = true;
       setParagraphs(updatedParagraphs);
@@ -18,7 +19,9 @@ export default function Home() {
         body: JSON.stringify({ text: paragraphs[index].norwegian })
       });
 
+      console.log('Response status:', response.status); // Debug log
       const data = await response.json();
+      console.log('Response data:', data); // Debug log
       
       if (!response.ok) {
         throw new Error(data.error || 'Translation failed');
@@ -63,18 +66,25 @@ export default function Home() {
   };
 
   return (
-    <div className="p-5">
-      <h1 className="text-2xl mb-5 font-serif">
+    <div className="p-5" style={{ padding: '20px' }}>
+      <h1 className="text-2xl mb-5 font-serif" style={{ fontSize: '24px', marginBottom: '20px', fontFamily: 'serif' }}>
         Norsk til engelsk oversetter
       </h1>
       
       {paragraphs.map((paragraph, index) => (
-        <div key={index} className="mb-5">
-          <div className="flex gap-5 mb-3">
+        <div key={index} className="mb-5" style={{ marginBottom: '20px' }}>
+          <div className="flex gap-5 mb-3" style={{ display: 'flex', gap: '20px', marginBottom: '10px' }}>
             {/* Norwegian textarea */}
-            <div className="w-1/2">
+            <div className="w-1/2" style={{ width: '50%' }}>
               <textarea
                 className="w-full h-40 border border-gray-300 p-3 bg-gray-50"
+                style={{
+                  width: '100%',
+                  height: '150px',
+                  border: '1px solid #ccc',
+                  padding: '10px',
+                  backgroundColor: '#f5f5f5'
+                }}
                 placeholder="Norsk tekst her. Tekst boks skaleres"
                 value={paragraph.norwegian}
                 onChange={(e) => {
@@ -86,9 +96,16 @@ export default function Home() {
             </div>
 
             {/* English textarea and analysis */}
-            <div className="w-1/2">
+            <div className="w-1/2" style={{ width: '50%' }}>
               <textarea
                 className="w-full h-40 border border-gray-300 p-3 bg-gray-50"
+                style={{
+                  width: '100%',
+                  height: '150px',
+                  border: '1px solid #ccc',
+                  padding: '10px',
+                  backgroundColor: '#f5f5f5'
+                }}
                 placeholder="Oversettelse her. Redigerbart felt."
                 value={paragraph.english}
                 onChange={(e) => {
@@ -99,32 +116,40 @@ export default function Home() {
               />
 
               {paragraph.analysis && (
-                <details className="analysis-section mt-2 border rounded-lg">
-                  <summary className="p-3 bg-gray-50 font-medium cursor-pointer hover:bg-gray-100">
+                <details 
+                  className="mt-2 border rounded-lg" 
+                  style={{ marginTop: '8px', border: '1px solid #ccc', borderRadius: '8px' }}
+                >
+                  <summary 
+                    className="p-3 bg-gray-50 cursor-pointer hover:bg-gray-100"
+                    style={{ 
+                      padding: '12px', 
+                      backgroundColor: '#f5f5f5', 
+                      cursor: 'pointer' 
+                    }}
+                  >
                     Show Analysis
                   </summary>
-                  <div className="p-4">
-                    {/* Strengths Section */}
-                    <div className="mb-4">
-                      <h3 className="text-gray-700 font-semibold mb-2">Strengths</h3>
-                      <div className="space-y-2">
+                  <div className="p-4" style={{ padding: '16px' }}>
+                    <div className="mb-4" style={{ marginBottom: '16px' }}>
+                      <h3 style={{ fontWeight: '600', marginBottom: '8px' }}>Strengths</h3>
+                      <div>
                         {paragraph.analysis
                           .split('Strengths:')[1]
                           ?.split('Areas for improvement:')[0]
                           ?.split('-')
                           .filter(line => line.trim())
                           .map((strength, i) => (
-                            <div key={i} className="text-gray-600 ml-2">
+                            <div key={i} style={{ marginLeft: '8px', color: '#4B5563' }}>
                               • {strength.trim()}
                             </div>
                           ))}
                       </div>
                     </div>
 
-                    {/* Improvement Section */}
                     <div>
-                      <h3 className="text-gray-700 font-semibold mb-2">Areas for improvement</h3>
-                      <div className="space-y-4">
+                      <h3 style={{ fontWeight: '600', marginBottom: '8px' }}>Areas for improvement</h3>
+                      <div>
                         {paragraph.analysis
                           .split('Areas for improvement:')[1]
                           ?.split(/Issue:|Suggestion:/)
@@ -138,11 +163,11 @@ export default function Home() {
                             return acc;
                           }, [])
                           .map((item, i) => (
-                            <div key={i} className="mb-4">
-                              <div className="text-red-600 font-semibold">Issue:</div>
-                              <div className="ml-4 mb-2">{item.issue}</div>
-                              <div className="text-green-600 font-semibold">Suggestion:</div>
-                              <div className="ml-4">{item.suggestion}</div>
+                            <div key={i} style={{ marginBottom: '16px' }}>
+                              <div style={{ color: '#DC2626', fontWeight: '600' }}>Issue:</div>
+                              <div style={{ marginLeft: '16px', marginBottom: '8px' }}>{item.issue}</div>
+                              <div style={{ color: '#059669', fontWeight: '600' }}>Suggestion:</div>
+                              <div style={{ marginLeft: '16px' }}>{item.suggestion}</div>
                             </div>
                           ))}
                       </div>
@@ -153,11 +178,15 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="mt-3">
+          <div className="mt-3" style={{ marginTop: '12px' }}>
             <button
-              className={`mr-3 px-4 py-1.5 border border-gray-400 ${
-                paragraph.isTranslating ? 'bg-gray-300 cursor-not-allowed' : 'bg-gray-100 cursor-pointer hover:bg-gray-200'
-              }`}
+              style={{
+                marginRight: '10px',
+                padding: '5px 15px',
+                backgroundColor: paragraph.isTranslating ? '#cccccc' : '#e9e9e9',
+                border: '1px solid #999',
+                cursor: paragraph.isTranslating ? 'not-allowed' : 'pointer'
+              }}
               onClick={() => handleTranslate(index)}
               disabled={paragraph.isTranslating}
             >
@@ -165,7 +194,12 @@ export default function Home() {
             </button>
             {index === paragraphs.length - 1 && (
               <button
-                className="px-4 py-1.5 bg-gray-100 border border-gray-400 cursor-pointer hover:bg-gray-200"
+                style={{
+                  padding: '5px 15px',
+                  backgroundColor: '#e9e9e9',
+                  border: '1px solid #999',
+                  cursor: 'pointer'
+                }}
                 onClick={() => setParagraphs([...paragraphs, { norwegian: '', english: '', analysis: '', isTranslating: false }])}
               >
                 Neste avsnitt
@@ -177,7 +211,13 @@ export default function Home() {
 
       {paragraphs.length > 1 && (
         <button
-          className="mt-5 px-4 py-1.5 bg-gray-100 border border-gray-400 cursor-pointer hover:bg-gray-200"
+          style={{
+            marginTop: '20px',
+            padding: '5px 15px',
+            backgroundColor: '#e9e9e9',
+            border: '1px solid #999',
+            cursor: 'pointer'
+          }}
           onClick={handleDownload}
         >
           Sett sammen tekst

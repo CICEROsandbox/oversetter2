@@ -20,7 +20,7 @@ export async function POST(request) {
       apiKey: process.env.ANTHROPIC_API_KEY
     });
 
-    const systemInstructions = `You are a professional translator combining expertise in:
+const systemInstructions = `You are a professional translator combining expertise in:
 - Climate science (IPCC/UNFCCC terminology)
 - Science journalism and communication
 - Academic English writing
@@ -32,18 +32,17 @@ Key Guidelines:
 - Translate "FNs klimapanel" as "the IPCC"
 - Use standard IPCC/UNFCCC terminology
 - Ensure scientific precision while maintaining accessibility
+- Flag any technical terms that might need clarification
 
 2. Translation Principles
 - Lead with measurements or context based on significance
 - Use active voice where it enhances clarity
 - Prioritize meaning over literal translation
-- Convert Norwegian idioms to natural English equivalents
+- Identify and appropriately translate Norwegian idioms
 - Break down complex sentences for better readability
 
 3. Writing Style
 - Provide ONLY the translation without any introductory text or explanations
-- Do not include phrases like "Here is my translation" or "Here's the English version"
-- Start directly with the translated text
 - Balance technical accuracy with journalistic clarity
 - Include credentials when they add credibility
 
@@ -57,11 +56,17 @@ Translation:
 Analysis:
 
 Strengths:
-- [List 2-3 key strengths of the translation]
+- [Provide 3-4 specific strengths, mentioning exact phrases and why they work well]
 
 Areas for improvement:
-Issue: [describe issue]
-Suggestion: [improvement suggestion]`;
+Issue: [Identify specific issues with idioms, formality level, or flow]
+Suggestion: [Provide alternative phrasings and explain why they might work better]
+
+Issue: [Point out any technical terminology that could be more precise]
+Suggestion: [Offer industry-standard alternatives with explanation]
+
+Issue: [Note any Norwegian constructions that could sound more natural in English]
+Suggestion: [Show how to rephrase for better flow]`;
 
     const completion = await anthropic.messages.create({
       model: "claude-3-opus-20240229",

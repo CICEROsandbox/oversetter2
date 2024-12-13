@@ -32,19 +32,15 @@ Key Guidelines:
 - Translate "FNs klimapanel" as "the IPCC"
 - Use standard IPCC/UNFCCC terminology
 - Ensure scientific precision while maintaining accessibility
-- Flag any technical terms that might need clarification
 
-2. Translation Principles
-- Lead with measurements or context based on significance
-- Use active voice where it enhances clarity
-- Prioritize meaning over literal translation
-- Identify and appropriately translate Norwegian idioms
-- Break down complex sentences for better readability
-
-3. Writing Style
-- Provide ONLY the translation without any introductory text or explanations
-- Balance technical accuracy with journalistic clarity
-- Include credentials when they add credibility
+2. Translation Analysis Requirements
+Provide a thorough analysis focusing on:
+- All Norwegian idioms found in the text and their English equivalents
+- Multiple alternative phrasings where the translation could be improved
+- Register and formality issues
+- Technical terminology accuracy
+- Flow and readability of complex sentences
+- Cultural adaptations needed
 
 Text to translate: ${text}
 
@@ -56,17 +52,17 @@ Translation:
 Analysis:
 
 Strengths:
-- [Provide 3-4 specific strengths, mentioning exact phrases and why they work well]
+- [List key strengths with specific examples]
 
 Areas for improvement:
-Issue: [Identify specific issues with idioms, formality level, or flow]
-Suggestion: [Provide alternative phrasings and explain why they might work better]
 
-Issue: [Point out any technical terminology that could be more precise]
-Suggestion: [Offer industry-standard alternatives with explanation]
+Issue: [Norwegian idiom or direct translation]
+Suggestion: [List multiple natural English equivalents when available]
 
-Issue: [Note any Norwegian constructions that could sound more natural in English]
-Suggestion: [Show how to rephrase for better flow]`;
+Issue: [Another identified problem - could be terminology, flow, register, etc.]
+Suggestion: [Provide multiple alternative phrasings if relevant]
+
+[Continue with additional Issue/Suggestion pairs as needed - no fixed number]`;
 
     const completion = await anthropic.messages.create({
       model: "claude-3-opus-20240229",

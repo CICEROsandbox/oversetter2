@@ -63,7 +63,7 @@ Issue: [Norwegian idiom or direct translation]
 Suggestion: [List multiple natural English equivalents when available]
 
 Issue: [Another identified problem - could be terminology, flow, register, etc.]
-Suggestion: [Provide multiple alternative phrasings if relevant]
+Suggestion: [Provide multiple alternative phrasings if it improves the text]
 
 [Continue with additional Issue/Suggestion pairs as needed - no fixed number]`;
 

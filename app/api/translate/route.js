@@ -32,6 +32,9 @@ Key Guidelines:
 - Translate "FNs klimapanel" as "the IPCC"
 - Use standard IPCC/UNFCCC terminology
 - Ensure scientific precision while maintaining accessibility
+- Have a preference for direct language
+- Be succinct and concise
+- Rephrase if it improves the text, without changing the meaning
 
 2. Translation Analysis Requirements
 Provide a thorough analysis focusing on:

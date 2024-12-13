@@ -7,24 +7,12 @@ export const dynamic = 'force-dynamic';
 export async function POST(request) {
   try {
     const { text } = await request.json();
-
-    // Input validation
-    if (!text || typeof text !== 'string') {
+    
+    if (!text) {
       return NextResponse.json({
-        error: 'Invalid input: Text is required and must be a string',
         translation: '',
         analysis: ''
       }, { status: 400 });
-    }
-
-    // Check API key
-    if (!process.env.ANTHROPIC_API_KEY) {
-      console.error('Missing Anthropic API key');
-      return NextResponse.json({
-        error: 'Configuration error',
-        translation: '',
-        analysis: ''
-      }, { status: 500 });
     }
 
     const anthropic = new Anthropic({
@@ -85,9 +73,7 @@ Suggestion: [improvement suggestion]`;
     });
 
     if (!completion?.content?.[0]?.text) {
-      console.error('Empty response from Anthropic API');
       return NextResponse.json({
-        error: 'Empty translation response',
         translation: '',
         analysis: ''
       }, { status: 500 });
@@ -98,43 +84,22 @@ Suggestion: [improvement suggestion]`;
     let translationPart = '';
     let analysisPart = '';
     
-    // More robust parsing
     if (response.includes('Analysis:')) {
-      const [translationSection, analysisSection] = response.split('Analysis:');
-      translationPart = translationSection.replace('Translation:', '').trim();
-      analysisPart = analysisSection.trim();
+      const parts = response.split('Analysis:');
+      translationPart = (parts[0] || '').replace('Translation:', '').trim();
+      analysisPart = (parts[1] || '').trim();
     } else {
       translationPart = response.replace('Translation:', '').trim();
     }
 
-    if (!translationPart) {
-      console.error('Failed to parse translation from response');
-      return NextResponse.json({
-        error: 'Failed to parse translation',
-        translation: '',
-        analysis: ''
-      }, { status: 500 });
-    }
-
     return NextResponse.json({
-      translation: translationPart,
-      analysis: analysisPart
+      translation: translationPart || '',
+      analysis: analysisPart || ''
     });
 
   } catch (error) {
     console.error('Translation error:', error);
-    
-    // More specific error handling
-    if (error.status === 401) {
-      return NextResponse.json({
-        error: 'Authentication failed',
-        translation: '',
-        analysis: ''
-      }, { status: 401 });
-    }
-    
     return NextResponse.json({ 
-      error: error.message || 'Internal server error',
       translation: '',
       analysis: ''
     }, { 

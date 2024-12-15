@@ -64,6 +64,9 @@ Areas for improvement:
 Issue: [Norwegian idiom or direct translation]
 Suggestion: [List multiple natural English equivalents when available. Explain why.]
 
+Issue: [Review the use of numbers, to ensure that it reads well in english and is correct]
+Suggestion: [Provide multiple alternative phrasings if it improves the text. Explain your suggestions.]
+
 Issue: [Another identified problem - could be terminology, flow, register, etc.]
 Suggestion: [Provide multiple alternative phrasings if it improves the text. Explain your suggestions.]
 

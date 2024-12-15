@@ -62,13 +62,13 @@ Strengths:
 Areas for improvement:
 
 Issue: [Norwegian idiom or direct translation]
-Suggestion: [List multiple natural English equivalents when available. Explain why.]
+Suggestion: [List multiple natural English equivalents when available. Explain why. Give an assessment of how necessary the change is: Optional, Recommended, Highly recommended.]
 
 Issue: [Review the use of numbers, to ensure that it reads well in english and is correct]
-Suggestion: [Provide multiple alternative phrasings if it improves the text. Explain your suggestions.]
+Suggestion: [Provide multiple alternative phrasings if it improves the text. Explain your suggestions. Give an assessment of how necessary the change is: Optional, Recommended, Highly recommended.]
 
 Issue: [Another identified problem - could be terminology, flow, register, etc.]
-Suggestion: [Provide multiple alternative phrasings if it improves the text. Explain your suggestions.]
+Suggestion: [Provide multiple alternative phrasings if it improves the text. Explain your suggestions. Give an assessment of how necessary the change is: Optional, Recommended, Highly recommended.]
 
 [Continue with additional Issue/Suggestion pairs as needed - no fixed number]`;
 

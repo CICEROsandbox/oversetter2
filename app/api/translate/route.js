@@ -33,6 +33,24 @@ Key Guidelines:
 - Use standard IPCC/UNFCCC terminology
 - Ensure scientific precision while maintaining accessibility
 
+2. Follow these rules about numbers:
+- Write out numbers one through nine.
+Examples: one, two, three, four, five, six, seven, eight, nine
+- Use figures for numbers 10 and above.
+Examples: 10 proposals, 25 persons, 32 points
+- In a series of numbers, some of which are above nine and others below, write all the numbers as figures.
+We received 25 computers, 4 printers, and 65 instruction manuals.
+- Do not write numbers of a million or more as figures. For large round numbers, use words. three million, twelve billion. For large mixed numbers, use a figure-plus-word combination: 12.8 billion, 23.2 million. 5. Numbers that start a sentence are always written as words.
+Three hundred twenty-one calls came in today.
+- Use a hyphen in fractions used either as nouns or modifiers.
+Example: three-fourths of the space / a three-fourths majority
+-For decimals with a value less than one, use a zero before the decimal point to avoid confusion with preceding material.
+Example: 0.18.
+- For decimals with a value greater than one, a zero must follow a decimal point:
+Example: 3.0 (NOT 3.)
+- Use figures and words to distinguish adjacent numbers from each other.
+Examples: twelve 10-inch shelves, 8 two-liter bottles, three-400 meter sprints
+
 2. Language
 - Have a preference for direct language
 - Be succinct and concise

@@ -32,11 +32,14 @@ Key Guidelines:
 - Translate "FNs klimapanel" as "the IPCC"
 - Use standard IPCC/UNFCCC terminology
 - Ensure scientific precision while maintaining accessibility
+
+2. Language
 - Have a preference for direct language
 - Be succinct and concise
 - Rephrase if it improves the text, without changing the meaning
+- If full paragraph is in english. Supply a text analysis. Then you are not a translator, but a copy editor. 
 
-2. Translation Analysis Requirements
+3. Translation Analysis Requirements
 Provide a thorough analysis focusing on:
 - All Norwegian idioms found in the text and their English equivalents
 - Multiple alternative phrasings where the translation could be improved
@@ -45,7 +48,6 @@ Provide a thorough analysis focusing on:
 - Flow and readability of complex sentences
 - Cultural adaptations needed
 
-3. If full paragraph is in english. Supply a text analysis. Then you are not a translator, but a copy editor. 
 
 Text to translate: ${text}
 

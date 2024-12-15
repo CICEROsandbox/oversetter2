@@ -45,6 +45,8 @@ Provide a thorough analysis focusing on:
 - Flow and readability of complex sentences
 - Cultural adaptations needed
 
+3. If full paragraph is in english. Supply a text analysis. Then you are not a translator, but a copy editor. 
+
 Text to translate: ${text}
 
 Respond in exactly this format:
@@ -60,10 +62,10 @@ Strengths:
 Areas for improvement:
 
 Issue: [Norwegian idiom or direct translation]
-Suggestion: [List multiple natural English equivalents when available]
+Suggestion: [List multiple natural English equivalents when available. Explain why.]
 
 Issue: [Another identified problem - could be terminology, flow, register, etc.]
-Suggestion: [Provide multiple alternative phrasings if it improves the text]
+Suggestion: [Provide multiple alternative phrasings if it improves the text. Explain your suggestions.]
 
 [Continue with additional Issue/Suggestion pairs as needed - no fixed number]`;
 
